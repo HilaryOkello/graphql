@@ -1,6 +1,27 @@
-let currentUser = null;
-let jwt = null;
+let currentUserId = null;
 let isDarkMode = false;
+
+window.addEventListener('DOMContentLoaded', function () {
+    const storedToken = localStorage.getItem('jwt');
+    const storedLoginTime = localStorage.getItem('loginTime');
+
+    if (storedToken && storedLoginTime) {
+        jwt = storedToken;
+
+        // Decode to get user info
+        const payloadBase64 = jwt.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        if (decodedPayload.exp * 1000 < Date.now()) {
+            console.log('Session expired.');
+            logout();
+            return;
+        }
+        currentUserId = decodedPayload.id;
+        // Show profile
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('profilePage').classList.remove('hidden');
+    }
+});
 
 // Dark mode toggle
 function toggleDarkMode() {
@@ -73,14 +94,20 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             throw new Error('Invalid credentials. Please try again.');
         }
 
-        jwt = await response.text();
+        const jwt = await response.text();
+        // Store JWT and time in local storage for session management
+        localStorage.setItem('jwt', jwt);
+        localStorage.setItem('loginTime', Date.now());
 
         // Decode JWT to get user info (just payload part)
         const payloadBase64 = jwt.split('.')[1];
         const decodedPayload = JSON.parse(atob(payloadBase64));
-        currentUser = { id: decodedPayload.id, login: decodedPayload.login };
 
-        console.log('Logged in as:', currentUser);
+        console.log('Decoded payload:', decodedPayload);
+
+        currentUserId = decodedPayload.id;
+
+        console.log('Logged in as:', currentUserId);
 
         // Hide error and switch to profile page
         document.getElementById('errorMessage').classList.add('hidden');
@@ -95,9 +122,10 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
 // Logout handler
 document.getElementById('logoutBtn').addEventListener('click', function () {
-    jwt = null;
-    currentUser = null;
-    
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('loginTime');
+    currentUserId = null;
+
     document.getElementById('profilePage').classList.add('hidden');
     document.getElementById('loginPage').classList.remove('hidden');
 
