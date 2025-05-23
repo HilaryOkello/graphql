@@ -1,4 +1,5 @@
 let currentUser = null;
+let jwt = null;
 let isDarkMode = false;
 
 // Dark mode toggle
@@ -46,37 +47,57 @@ document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMo
 document.getElementById('darkModeToggleProfile').addEventListener('click', toggleDarkMode);
 
 // Login form handler
-const loginFrom = document.getElementById('loginForm')
-if (loginFrom === null) {
-    console.error('Login form not found');
-}
-addEventListener('submit', function (e) {
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     console.log('Login form submitted');
 
-    const username = document.getElementById('username').value;
+    const identifier = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // Simulate authentication (replace with actual GraphQL call)
-    if (username && password) {
-        // Hide error message
+    if (!identifier || !password) {
+        document.getElementById('errorMessage').textContent = 'Please enter both username/email and password.';
+        document.getElementById('errorMessage').classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const credentials = btoa(`${identifier}:${password}`);
+        const response = await fetch('https://learn.zone01kisumu.ke/api/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${credentials}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Invalid credentials. Please try again.');
+        }
+
+        jwt = await response.text();
+
+        // Decode JWT to get user info (just payload part)
+        const payloadBase64 = jwt.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        currentUser = { id: decodedPayload.id, login: decodedPayload.login };
+
+        console.log('Logged in as:', currentUser);
+
+        // Hide error and switch to profile page
         document.getElementById('errorMessage').classList.add('hidden');
-
-        // Simulate successful login
-        currentUser = { id: 42, login: username };
-
-        // Switch to profile page
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('profilePage').classList.remove('hidden');
-    } else {
-        // Show error message
+
+    } catch (err) {
+        document.getElementById('errorMessage').textContent = err.message;
         document.getElementById('errorMessage').classList.remove('hidden');
     }
 });
 
 // Logout handler
 document.getElementById('logoutBtn').addEventListener('click', function () {
+    jwt = null;
     currentUser = null;
+    
     document.getElementById('profilePage').classList.add('hidden');
     document.getElementById('loginPage').classList.remove('hidden');
 
