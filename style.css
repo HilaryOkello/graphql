@@ -1,0 +1,15 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+input:checked+.block {
+    background-color: #3B82F6;
+}
+
+input:checked+.block+.dot {
+    transform: translateX(100%);
+}
