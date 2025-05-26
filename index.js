@@ -1,22 +1,81 @@
+import { GET_COMPLETE_USER_DATA } from "./graphqlQuery.js";
+import { processUserData } from "./graphqlQuery.js";
 let currentUserId = null;
 let isDarkMode = false;
+const GRAPHQL_ENDPOINT = 'https://learn.zone01kisumu.ke/api/graphql-engine/v1/graphql';
+
+async function fetchGraphQL(query, token) {
+  try {
+    const response = await fetch(GRAPHQL_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        query: query
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+      throw new Error('GraphQL query failed');
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error('GraphQL fetch error:', error);
+    throw error;
+  }
+}
+
+async function getUserProfileData(token) {
+  try {
+    const data = await fetchGraphQL(GET_COMPLETE_USER_DATA, token);
+    return processUserData(data);
+  } catch (error) {
+    console.error('Error fetching user profile data:', error);
+    throw error;
+  }
+}
 
 window.addEventListener('DOMContentLoaded', function () {
     const storedToken = localStorage.getItem('jwt');
     const storedLoginTime = localStorage.getItem('loginTime');
 
     if (storedToken && storedLoginTime) {
-        jwt = storedToken;
+        const jwt = storedToken;
 
         // Decode to get user info
         const payloadBase64 = jwt.split('.')[1];
         const decodedPayload = JSON.parse(atob(payloadBase64));
         if (decodedPayload.exp * 1000 < Date.now()) {
             console.log('Session expired.');
-            logout();
+        Logout();
             return;
         }
         currentUserId = decodedPayload.id;
+
+        //fetch user data
+        getUserProfileData(jwt)
+            .then(userData => {
+                console.log('User data:', userData);
+                document.getElementById('Login').textContent = userData.userInfo.login;
+                document.getElementById('FullName').textContent = userData.userInfo.fullName;
+                document.getElementById('Email').textContent = userData.userInfo.email;
+                document.getElementById('Campus').textContent = userData.userInfo.campus;
+                document.getElementById('Level').textContent = userData.userInfo.level;
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+            });
+
         // Show profile
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('profilePage').classList.remove('hidden');
@@ -70,7 +129,6 @@ document.getElementById('darkModeToggleProfile').addEventListener('click', toggl
 // Login form handler
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    console.log('Login form submitted');
 
     const identifier = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -94,7 +152,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             throw new Error('Invalid credentials. Please try again.');
         }
 
-        const jwt = await response.text();
+        const jwt = await response.json();
         // Store JWT and time in local storage for session management
         localStorage.setItem('jwt', jwt);
         localStorage.setItem('loginTime', Date.now());
@@ -103,11 +161,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const payloadBase64 = jwt.split('.')[1];
         const decodedPayload = JSON.parse(atob(payloadBase64));
 
-        console.log('Decoded payload:', decodedPayload);
-
-        currentUserId = decodedPayload.id;
-
-        console.log('Logged in as:', currentUserId);
+        currentUserId = decodedPayload.sub;
 
         // Hide error and switch to profile page
         document.getElementById('errorMessage').classList.add('hidden');
@@ -120,8 +174,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     }
 });
 
-// Logout handler
-document.getElementById('logoutBtn').addEventListener('click', function () {
+function Logout () {
     localStorage.removeItem('jwt');
     localStorage.removeItem('loginTime');
     currentUserId = null;
@@ -132,7 +185,10 @@ document.getElementById('logoutBtn').addEventListener('click', function () {
     // Clear form
     document.getElementById('loginForm').reset();
     document.getElementById('errorMessage').classList.add('hidden');
-});
+}
+
+// Logout handler
+document.getElementById('logoutBtn').addEventListener('click', Logout);
 
 // Add some interactive hover effects for SVG elements
 document.querySelectorAll('circle, path, polyline').forEach(element => {
