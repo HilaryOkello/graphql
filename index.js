@@ -1,5 +1,27 @@
-let currentUser = null;
+let currentUserId = null;
 let isDarkMode = false;
+
+window.addEventListener('DOMContentLoaded', function () {
+    const storedToken = localStorage.getItem('jwt');
+    const storedLoginTime = localStorage.getItem('loginTime');
+
+    if (storedToken && storedLoginTime) {
+        jwt = storedToken;
+
+        // Decode to get user info
+        const payloadBase64 = jwt.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        if (decodedPayload.exp * 1000 < Date.now()) {
+            console.log('Session expired.');
+            logout();
+            return;
+        }
+        currentUserId = decodedPayload.id;
+        // Show profile
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('profilePage').classList.remove('hidden');
+    }
+});
 
 // Dark mode toggle
 function toggleDarkMode() {
@@ -46,37 +68,64 @@ document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMo
 document.getElementById('darkModeToggleProfile').addEventListener('click', toggleDarkMode);
 
 // Login form handler
-const loginFrom = document.getElementById('loginForm')
-if (loginFrom === null) {
-    console.error('Login form not found');
-}
-addEventListener('submit', function (e) {
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     console.log('Login form submitted');
 
-    const username = document.getElementById('username').value;
+    const identifier = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // Simulate authentication (replace with actual GraphQL call)
-    if (username && password) {
-        // Hide error message
+    if (!identifier || !password) {
+        document.getElementById('errorMessage').textContent = 'Please enter both username/email and password.';
+        document.getElementById('errorMessage').classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const credentials = btoa(`${identifier}:${password}`);
+        const response = await fetch('https://learn.zone01kisumu.ke/api/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${credentials}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Invalid credentials. Please try again.');
+        }
+
+        const jwt = await response.text();
+        // Store JWT and time in local storage for session management
+        localStorage.setItem('jwt', jwt);
+        localStorage.setItem('loginTime', Date.now());
+
+        // Decode JWT to get user info (just payload part)
+        const payloadBase64 = jwt.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+
+        console.log('Decoded payload:', decodedPayload);
+
+        currentUserId = decodedPayload.id;
+
+        console.log('Logged in as:', currentUserId);
+
+        // Hide error and switch to profile page
         document.getElementById('errorMessage').classList.add('hidden');
-
-        // Simulate successful login
-        currentUser = { id: 42, login: username };
-
-        // Switch to profile page
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('profilePage').classList.remove('hidden');
-    } else {
-        // Show error message
+
+    } catch (err) {
+        document.getElementById('errorMessage').textContent = err.message;
         document.getElementById('errorMessage').classList.remove('hidden');
     }
 });
 
 // Logout handler
 document.getElementById('logoutBtn').addEventListener('click', function () {
-    currentUser = null;
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('loginTime');
+    currentUserId = null;
+
     document.getElementById('profilePage').classList.add('hidden');
     document.getElementById('loginPage').classList.remove('hidden');
 
