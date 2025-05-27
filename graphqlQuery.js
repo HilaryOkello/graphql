@@ -1,101 +1,73 @@
 export const GET_COMPLETE_USER_DATA = `
   query GetCompleteUserData {
-    user {
-      id
-      login
-      email: attrs(path: "email")
-      firstName: attrs(path: "firstName")
-      lastName: attrs(path: "lastName")
-      auditRatio
-      totalUp
-      totalDown
-      campus
-      
-      # XP transactions for total XP and XP over time
-      transactions(
-        where: { type: { _eq: "xp" } }
-        order_by: { createdAt: asc }
-      ) {
-        id
-        amount
-        createdAt
-        path
-        object {
-          name
-          type
-        }
-      }
-      
-      # Progress data for project completion rates and levels
-      progresses(order_by: { createdAt: desc }) {
-        id
-        grade
-        createdAt
-        updatedAt
-        path
-        isDone
-        object {
-          id
-          name
-          type
-          attrs
-        }
-      }
-      
-      # Results for project pass/fail statistics
-      results(order_by: { createdAt: desc }) {
-        id
-        grade
-        createdAt
-        updatedAt
-        path
-        object {
-          id
-          name
-          type
-          attrs
-        }
-      }
-      
-      # Additional transactions for audit tracking (up/down votes)
-      transactionsUp: transactions(where: { type: { _eq: "up" } }) {
-        id
-        amount
-        createdAt
-        userId
-      }
-      
-      transactionsDown: transactions(where: { type: { _eq: "down" } }) {
-        id
-        amount
-        createdAt
-        userId
-      }
-      
-      # Additional user attributes for skills and level information
-      attrs
+  user {
+    id
+    login
+    email: attrs(path: "email")
+    firstName: attrs(path: "firstName")
+    lastName: attrs(path: "lastName")
+    auditRatio
+    totalUp
+    totalDown
+    campus
+    events(where: {eventId: {_eq: 75}}) {
+      level
     }
-    
-    # Get overall object information for project categorization
-    object(
-      where: {
-        _or: [
-          { type: { _eq: "project" } }
-          { type: { _eq: "piscine" } }
-          { type: { _eq: "exercise" } }
-        ]
-      }
+    transactions(
+      where: {type: {_eq: "xp"}, eventId: {_eq: 75}}
+      order_by: {createdAt: asc}
     ) {
       id
-      name
+      amount
+      createdAt
+      path
+      object {
+        name
+        type
+      }
+    }
+    progresses(where: {eventId: {_eq: 75}}, order_by: {createdAt: desc}) {
+      id
+      grade
+      createdAt
+      updatedAt
+      path
+      isDone
+      object {
+        id
+        name
+        type
+        attrs
+      }
+    }
+    results(where: {eventId: {_eq: 75}}, order_by: {createdAt: desc}) {
+      id
+      grade
+      createdAt
+      updatedAt
+      path
+      object {
+        id
+        name
+        type
+        attrs
+      }
+    }
+    skills: transactions(
+      order_by: {type: asc, amount: desc}
+      distinct_on: [type]
+      where: {eventId: {_eq: 75}, _and: {type: {_like: "skill_%"}}}
+    ) {
       type
-      attrs
+      amount
+      __typename
     }
   }
+}
 `;
 
 export function processUserData(data) {
-  const user = data.user[0]; // GraphQL returns array
+  const user = data.user[0];
   console.log('Processing user data:', user);
   
   // Calculate total XP
@@ -143,7 +115,7 @@ export function processUserData(data) {
       email: user.email,
       fullName: `${user.firstName} ${user.lastName}`,
       campus: user.campus,
-      level: user.attrs?.level || 0,
+      level: user.events[0].level,
       auditRatio: user.auditRatio,
       totalUp: user.totalUp,
       totalDown: user.totalDown
