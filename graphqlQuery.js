@@ -26,33 +26,32 @@ export const GET_COMPLETE_USER_DATA = `
         type
       }
     }
-    progresses(where: {eventId: {_eq: 75}}, order_by: {createdAt: desc}) {
-      id
-      grade
-      createdAt
-      updatedAt
-      path
-      isDone
-      object {
-        id
-        name
-        type
-        attrs
+    passedProjects: progresses_aggregate(
+      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, isDone: {_eq: true}, grade: {_gte: 1}}
+    ) {
+      aggregate {
+        count
       }
     }
-    results(where: {eventId: {_eq: 75}}, order_by: {createdAt: desc}) {
-      id
-      grade
-      createdAt
-      updatedAt
-      path
-      object {
-        id
-        name
-        type
-        attrs
+    
+    failedProjects: progresses_aggregate(
+      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, grade: {_lt: 0}}
+    ) {
+      aggregate {
+        count
       }
     }
+    
+    averageGrade: progresses_aggregate(
+      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}}
+    ) {
+      aggregate {
+        avg {
+          grade
+        }
+      }
+    }
+    
     skills: transactions(
       order_by: {type: asc, amount: desc}
       distinct_on: [type]
@@ -65,7 +64,6 @@ export const GET_COMPLETE_USER_DATA = `
   }
 }
 `;
-
 export function processUserData(data) {
   const user = data.user[0];
   console.log('Processing user data:', user);
@@ -94,7 +92,7 @@ export function processUserData(data) {
   const failedProjects = user.results.filter(r => r.grade === 0).length;
   const successRate = passedProjects / (passedProjects + failedProjects) * 100 || 0;
   
-  // Process XP over time for chart
+  // Process XP over time for chart (with proper date handling)
   const xpOverTime = {};
   let cumulativeXP = 0;
   
@@ -102,10 +100,10 @@ export function processUserData(data) {
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
     .forEach(transaction => {
       const date = new Date(transaction.createdAt);
-      const month = date.toLocaleDateString('en-US', { month: 'short' });
+      const monthYear = date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
       
       cumulativeXP += transaction.amount;
-      xpOverTime[month] = cumulativeXP;
+      xpOverTime[monthYear] = cumulativeXP;
     });
   
   return {
@@ -135,6 +133,7 @@ export function processUserData(data) {
       failed: failedProjects,
       successRate: successRate,
       total: passedProjects + failedProjects
-    }
+    },
+    skills: user.skills || []
   };
 }
