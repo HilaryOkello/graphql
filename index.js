@@ -4,30 +4,29 @@ let currentUserId = null;
 let isDarkMode = false;
 const GRAPHQL_ENDPOINT = 'https://learn.zone01kisumu.ke/api/graphql-engine/v1/graphql';
 
-// Loading state management
-function showLoading(elementId) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.innerHTML = '<span class="animate-pulse">Loading...</span>';
-    element.classList.add('loading');
+// JWT token validation
+function isValidToken(token) {
+  if (!token) return false;
+
+  try {
+    // JWT tokens consist of three parts separated by dots
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+
+    // Decode the payload (middle part)
+    const payload = JSON.parse(atob(parts[1]));
+
+    // Check if token is expired
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (payload.exp && payload.exp < currentTime) return false;
+
+    return true;
+  } catch (error) {
+    console.error('Error validating token:', error);
+    return false;
   }
 }
 
-function hideLoading(elementId) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.classList.remove('loading');
-  }
-}
-
-// Error handling for UI elements
-function showError(elementId, message) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.innerHTML = `<span class="text-red-500">${message || 'Error loading data'}</span>`;
-    element.classList.add('error');
-  }
-}
 
 // Global error handler for the profile page
 function showProfileError(message) {
@@ -56,7 +55,7 @@ async function fetchGraphQL(query, token) {
     }
 
     const data = await response.json();
-    
+
     if (data.errors) {
       console.error('GraphQL errors:', data.errors);
       throw new Error(data.errors[0]?.message || 'GraphQL query failed');
@@ -85,7 +84,7 @@ function renderUserInfo(userData) {
     if (!userData || !userData.userInfo) {
       throw new Error('User information not available');
     }
-    
+
     document.getElementById('Login').textContent = userData.userInfo.login || 'N/A';
     document.getElementById('FullName').textContent = userData.userInfo.fullName || 'N/A';
     document.getElementById('Email').textContent = userData.userInfo.email || 'N/A';
@@ -93,11 +92,7 @@ function renderUserInfo(userData) {
     document.getElementById('Level').textContent = userData.userInfo.level || 'N/A';
   } catch (error) {
     console.error('Error rendering user info:', error);
-    showError('Login', 'Error');
-    showError('FullName', 'Error');
-    showError('Email', 'Error');
-    showError('Campus', 'Error');
-    showError('Level', 'Error');
+    showProfileError(`Failed to load profile data: ${error.message}`);
   }
 }
 
@@ -107,15 +102,15 @@ function renderXPData(userData) {
     if (!userData || !userData.xp) {
       throw new Error('XP data not available');
     }
-    
+
     const xpElement = document.getElementById('totalXP');
     const xpProgressElement = document.getElementById('xpProgress');
     const xpNextLevelElement = document.getElementById('xpNextLevel');
-    
+
     if (xpElement) {
       xpElement.textContent = `${userData.xp.total.toLocaleString()} XP`;
     }
-    
+
     // Calculate progress to next level (simplified example)
     const currentLevel = parseInt(userData.userInfo.level) || 0;
     const nextLevelXP = (currentLevel + 1) * 10000; // Simplified calculation
@@ -123,19 +118,18 @@ function renderXPData(userData) {
     const xpToNextLevel = nextLevelXP - currentLevelXP;
     const currentProgress = userData.xp.total - currentLevelXP;
     const progressPercentage = Math.min(Math.round((currentProgress / xpToNextLevel) * 100), 100);
-    
+
     if (xpProgressElement) {
       xpProgressElement.style.width = `${progressPercentage}%`;
     }
-    
+
     if (xpNextLevelElement) {
       xpNextLevelElement.textContent = `${progressPercentage}% to next level`;
     }
   } catch (error) {
     console.error('Error rendering XP data:', error);
-    showError('totalXP', 'XP data unavailable');
-    showError('xpNextLevel', 'Progress data unavailable');
-    
+    showProfileError(`Failed to load profile data: ${error.message}`);
+
     // Set progress bar to 0% on error
     const xpProgressElement = document.getElementById('xpProgress');
     if (xpProgressElement) {
@@ -150,33 +144,30 @@ function renderAuditRatio(userData) {
     if (!userData || !userData.auditRatio) {
       throw new Error('Audit ratio data not available');
     }
-    
+
     const ratioElement = document.getElementById('auditRatioValue');
     const givenElement = document.getElementById('auditsGiven');
     const receivedElement = document.getElementById('auditsReceived');
     const summaryElement = document.getElementById('auditSummary');
-    
+
     if (ratioElement) {
       ratioElement.textContent = userData.auditRatio.ratio.toFixed(2);
     }
-    
+
     if (givenElement) {
       givenElement.textContent = userData.auditRatio.given;
     }
-    
+
     if (receivedElement) {
       receivedElement.textContent = userData.auditRatio.received;
     }
-    
+
     if (summaryElement) {
       summaryElement.textContent = `Done: ${userData.auditRatio.given} | Received: ${userData.auditRatio.received}`;
     }
   } catch (error) {
     console.error('Error rendering audit ratio:', error);
-    showError('auditRatioValue', 'N/A');
-    showError('auditsGiven', 'N/A');
-    showError('auditsReceived', 'N/A');
-    showError('auditSummary', 'Audit data unavailable');
+    showProfileError(`Failed to load profile data: ${error.message}`);
   }
 }
 
@@ -186,41 +177,72 @@ function renderProjectSuccess(userData) {
     if (!userData || !userData.projects) {
       throw new Error('Project data not available');
     }
-    
+
     const passedElement = document.getElementById('projectsPassed');
     const failedElement = document.getElementById('projectsFailed');
     const successRateElement = document.getElementById('projectSuccessRate');
-    
-    // Update the pie chart
-    const successSlice = document.getElementById('successSlice');
-    const failSlice = document.getElementById('failSlice');
-    
+
     if (passedElement) {
       passedElement.textContent = userData.projects.passed;
     }
-    
+
     if (failedElement) {
       failedElement.textContent = userData.projects.failed;
     }
-    
+
     if (successRateElement) {
       successRateElement.textContent = `${Math.round(userData.projects.successRate)}%`;
     }
-    
-    // Update pie chart (this is a simplified approach - in a real app you might use a charting library)
+
+    // Calculate angles for pie chart
+    const totalProjects = userData.projects.passed + userData.projects.failed;
+    let passedPercentage = 0;
+    let failedPercentage = 0;
+
+    if (totalProjects > 0) {
+      passedPercentage = (userData.projects.passed / totalProjects) * 100;
+      failedPercentage = (userData.projects.failed / totalProjects) * 100;
+    }
+
+    // Update pie chart
+    const successSlice = document.getElementById('successSlice');
+    const failSlice = document.getElementById('failSlice');
+
     if (successSlice && failSlice) {
-      const successAngle = 3.6 * userData.projects.successRate;
-      const successPath = describeArc(100, 100, 50, 0, successAngle);
-      const failPath = describeArc(100, 100, 50, successAngle, 360);
-      
-      successSlice.setAttribute('d', `M 100 100 L 100 50 ${successPath} Z`);
-      failSlice.setAttribute('d', `M 100 100 ${failPath} L 100 50 Z`);
+      if (totalProjects === 0) {
+        // No projects data - show 50/50 split with gray colors
+        successSlice.setAttribute('d', 'M 100 100 L 100 50 A 50 50 0 0 1 150 100 Z');
+        failSlice.setAttribute('d', 'M 100 100 L 150 100 A 50 50 0 0 1 100 50 Z');
+        successSlice.setAttribute('fill', '#94a3b8'); // slate-400
+        failSlice.setAttribute('fill', '#cbd5e1'); // slate-300
+      } else {
+        // Calculate angles for the pie slices
+        const passedAngle = 3.6 * passedPercentage;
+
+        if (passedPercentage === 100) {
+          // All passed
+          successSlice.setAttribute('d', 'M 100 100 L 100 50 A 50 50 0 1 1 99.99 50 Z');
+          failSlice.setAttribute('d', '');
+        } else if (passedPercentage === 0) {
+          // All failed
+          successSlice.setAttribute('d', '');
+          failSlice.setAttribute('d', 'M 100 100 L 100 50 A 50 50 0 1 1 99.99 50 Z');
+        } else {
+          // Mixed results
+          const endX = 100 + 50 * Math.sin(Math.PI * 2 * (passedAngle / 360));
+          const endY = 100 - 50 * Math.cos(Math.PI * 2 * (passedAngle / 360));
+
+          successSlice.setAttribute('d', `M 100 100 L 100 50 A 50 50 0 ${passedAngle > 180 ? 1 : 0} 1 ${endX} ${endY} Z`);
+          failSlice.setAttribute('d', `M 100 100 L ${endX} ${endY} A 50 50 0 ${passedAngle > 180 ? 0 : 1} 1 100 50 Z`);
+        }
+
+        // Reset colors
+        successSlice.setAttribute('fill', '#22C55E'); // green-500
+        failSlice.setAttribute('fill', '#ef4444'); // red-500
+      }
     }
   } catch (error) {
     console.error('Error rendering project success:', error);
-    showError('projectsPassed', 'N/A');
-    showError('projectsFailed', 'N/A');
-    showError('projectSuccessRate', 'N/A');
   }
 }
 
@@ -239,81 +261,173 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
     y: centerY + (radius * Math.sin(angleInRadians))
   };
 }
-
-// Render XP Progress Chart
 function renderXPProgressChart(userData) {
+  const chartContainer = document.getElementById('xpProgressChart');
+  if (!chartContainer) return;
+
+  chartContainer.innerHTML = '';
+
+  // Set up chart dimensions
+  const width = 400;
+  const height = 200;
+  const padding = { left: 50, right: 20, top: 20, bottom: 40 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+
+  // Create SVG with proper namespace
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  chartContainer.appendChild(svg);
+
+  if (!userData || !userData.xp || !userData.xp.overTime || Object.keys(userData.xp.overTime).length === 0) {
+    return;
+  }
+
   try {
-    if (!userData || !userData.xp || !userData.xp.overTime) {
-      throw new Error('XP over time data not available');
+    const overTime = userData.xp.overTime;
+
+    // Generate last 12 months including current month
+    const monthsToDisplay = [];
+    const now = new Date();
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i);
+      const label = date.toLocaleString('default', { month: 'short' }) + ' ' + String(date.getFullYear()).slice(-2);
+      monthsToDisplay.push(label);
     }
-    
-    const chartContainer = document.getElementById('xpProgressChart');
-    if (!chartContainer) return;
-    
-    const months = Object.keys(userData.xp.overTime);
-    const values = Object.values(userData.xp.overTime);
-    
-    if (months.length === 0) {
-      throw new Error('No XP time data available');
+
+    // Map values for those months (plateau if missing)
+    const displayValues = [];
+    let lastKnownValue = 0;
+    monthsToDisplay.forEach(month => {
+      if (overTime[month] !== undefined) {
+        lastKnownValue = overTime[month];
+      }
+      displayValues.push(lastKnownValue);
+    });
+
+    // Calculate dynamic scale
+    const minXP = Math.min(...displayValues);
+    const maxXP = Math.max(...displayValues);
+    const xpRange = maxXP - minXP;
+
+    // Add some padding to the range (10% on each side)
+    const padding_percent = 0.1;
+    const scaledMin = Math.max(0, minXP - (xpRange * padding_percent));
+    const scaledMax = maxXP + (xpRange * padding_percent);
+    const finalRange = scaledMax - scaledMin;
+
+    // Calculate positions
+    const xStep = chartWidth / (monthsToDisplay.length - 1);
+
+    // Create defs for grid pattern
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    svg.appendChild(defs);
+
+    // Draw background
+    const background = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    background.setAttribute('x', padding.left);
+    background.setAttribute('y', padding.top);
+    background.setAttribute('width', chartWidth);
+    background.setAttribute('height', chartHeight);
+    background.setAttribute('fill', '#f8fafc');
+    background.setAttribute('stroke', '#e2e8f0');
+    svg.appendChild(background);
+
+    // Draw horizontal grid lines and Y-axis labels
+    const numYGridLines = 5;
+    for (let i = 0; i <= numYGridLines; i++) {
+      const y = padding.top + (i * chartHeight / numYGridLines);
+      const value = scaledMax - (i * finalRange / numYGridLines);
+
+      // Grid line
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', padding.left);
+      line.setAttribute('y1', y);
+      line.setAttribute('x2', padding.left + chartWidth);
+      line.setAttribute('y2', y);
+      line.setAttribute('stroke', '#e2e8f0');
+      line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
+
+      // Y-axis label
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', padding.left - 10);
+      text.setAttribute('y', y + 4);
+      text.setAttribute('text-anchor', 'end');
+      text.setAttribute('class', 'text-xs font-mono fill-slate-600');
+
+      // Format the value nicely
+      let formattedValue;
+      if (value >= 1000) {
+        formattedValue = (value / 1000).toFixed(value >= 10000 ? 0 : 1) + 'k';
+      } else {
+        formattedValue = Math.round(value).toString();
+      }
+      text.textContent = formattedValue;
+      svg.appendChild(text);
     }
-    
-    // Find max value for scaling
-    const maxXP = Math.max(...values);
-    
-    // Generate points for the polyline
+
+    // Draw vertical grid lines for each month
+    monthsToDisplay.forEach((month, index) => {
+      const x = padding.left + (index * xStep);
+
+      // Vertical grid line
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x);
+      line.setAttribute('y1', padding.top);
+      line.setAttribute('x2', x);
+      line.setAttribute('y2', padding.top + chartHeight);
+      line.setAttribute('stroke', '#e2e8f0');
+      line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
+
+      // X-axis label
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', x);
+      text.setAttribute('y', height - padding.bottom + 15);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('class', 'text-xs font-mono fill-slate-600');
+      text.textContent = month.split(' ')[0]; // Just the month abbreviation
+      svg.appendChild(text);
+    });
+
+    // Plot the data line and points
     let points = '';
-    const width = 400;
-    const height = 200;
-    const padding = 20;
-    const availableWidth = width - (padding * 2);
-    const availableHeight = height - (padding * 2);
-    
-    months.forEach((month, index) => {
-      const x = padding + (index * (availableWidth / (months.length - 1)));
-      const y = height - padding - ((values[index] / maxXP) * availableHeight);
+    const circles = [];
+
+    monthsToDisplay.forEach((month, index) => {
+      const x = padding.left + (index * xStep);
+      const normalizedValue = (displayValues[index] - scaledMin) / finalRange;
+      const y = padding.top + chartHeight - (normalizedValue * chartHeight);
+
       points += `${x},${y} `;
+
+      // Create circle for data point
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', '4');
+      circle.setAttribute('fill', '#2563eb');
+      circle.setAttribute('stroke', '#ffffff');
+      circle.setAttribute('stroke-width', '2');
+      circles.push(circle);
     });
-    
-    // Update the polyline
-    const polyline = chartContainer.querySelector('polyline');
-    if (polyline) {
-      polyline.setAttribute('points', points.trim());
-    }
-    
-    // Update data points (circles)
-    const circles = chartContainer.querySelectorAll('circle');
-    months.forEach((month, index) => {
-      if (circles[index]) {
-        const x = padding + (index * (availableWidth / (months.length - 1)));
-        const y = height - padding - ((values[index] / maxXP) * availableHeight);
-        circles[index].setAttribute('cx', x);
-        circles[index].setAttribute('cy', y);
-      }
-    });
-    
-    // Update month labels
-    const texts = chartContainer.querySelectorAll('text[data-type="month"]');
-    months.forEach((month, index) => {
-      if (index % Math.ceil(months.length / 5) === 0 && texts[index / Math.ceil(months.length / 5)]) {
-        const x = padding + (index * (availableWidth / (months.length - 1)));
-        texts[index / Math.ceil(months.length / 5)].setAttribute('x', x);
-        texts[index / Math.ceil(months.length / 5)].textContent = month;
-      }
-    });
-    
-    // Update y-axis labels
-    const yLabels = chartContainer.querySelectorAll('text[data-type="y-value"]');
-    if (yLabels.length >= 3) {
-      yLabels[0].textContent = '0';
-      yLabels[1].textContent = `${Math.round(maxXP / 2 / 1000)}k`;
-      yLabels[2].textContent = `${Math.round(maxXP / 1000)}k`;
-    }
+
+    // Draw the connecting line
+    const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    polyline.setAttribute('fill', 'none');
+    polyline.setAttribute('stroke', '#2563eb');
+    polyline.setAttribute('stroke-width', '3');
+    polyline.setAttribute('points', points.trim());
+    svg.appendChild(polyline);
+
+    // Add the circles on top
+    circles.forEach(circle => svg.appendChild(circle));
+
   } catch (error) {
     console.error('Error rendering XP progress chart:', error);
-    const chartContainer = document.getElementById('xpProgressChart');
-    if (chartContainer) {
-      chartContainer.innerHTML = '<text x="200" y="100" text-anchor="middle" class="text-red-500">Chart data unavailable</text>';
-    }
   }
 }
 
@@ -323,25 +437,25 @@ function renderXPByProject(userData) {
     if (!userData || !userData.xp || !userData.xp.byProject || !userData.xp.byProject.length) {
       throw new Error('XP by project data not available');
     }
-    
+
     const container = document.getElementById('xpByProjectContainer');
     if (!container) return;
-    
+
     // Clear existing content
     container.innerHTML = '';
-    
+
     // Find max value for scaling
     const maxXP = Math.max(...userData.xp.byProject.map(([, xp]) => xp));
-    
+
     // Define colors for variety
     const colors = ['blue-600', 'green-500', 'purple-500', 'yellow-500', 'red-500'];
-    
+
     // Create project bars
     userData.xp.byProject.forEach(([project, xp], index) => {
       const color = colors[index % colors.length];
-      
+
       const percentage = Math.round((xp / maxXP) * 100);
-      
+
       const projectDiv = document.createElement('div');
       projectDiv.className = 'flex items-center gap-4';
       projectDiv.innerHTML = `
@@ -351,7 +465,7 @@ function renderXPByProject(userData) {
         </div>
         <div class="w-16 font-mono text-sm font-bold text-${color}">${xp.toLocaleString()}</div>
       `;
-      
+
       container.appendChild(projectDiv);
     });
   } catch (error) {
@@ -363,19 +477,69 @@ function renderXPByProject(userData) {
   }
 }
 
+// Render Skills Overview
+function renderSkillsOverview(userData) {
+  try {
+    if (!userData || !userData.skills || !userData.skills.length) {
+      throw new Error('Skills data not available');
+    }
+
+    const container = document.getElementById('skillsOverview');
+    if (!container) return;
+
+    // Clear existing content
+    container.innerHTML = '';
+
+    // Find max value for scaling
+    const maxSkill = Math.max(...userData.skills.map(skill => skill.amount));
+
+    // Define colors for variety
+    const colors = ['blue-600', 'green-500', 'purple-500', 'yellow-500', 'red-500'];
+
+    // Sort skills by amount (highest first)
+    const sortedSkills = [...userData.skills].sort((a, b) => b.amount - a.amount);
+    console.log("sorted skills: ", sortedSkills)
+
+    // Create skill bars
+    sortedSkills.forEach((skill, index) => {
+      const color = colors[index % colors.length];
+      const skillName = skill.type.replace('skill_', '');
+      const percentage = Math.round((skill.amount / maxSkill) * 100);
+
+      const skillDiv = document.createElement('div');
+      skillDiv.className = 'space-y-3';
+      skillDiv.innerHTML = `
+        <div>
+          <div class="flex justify-between mb-1">
+            <span class="text-slate-500">${skillName}</span>
+            <span class="text-${color} font-bold">${percentage}%</span>
+          </div>
+          <div class="bg-slate-200 h-2 border border-blue-200">
+            <div class="bg-${color} h-full" style="width: ${percentage}%"></div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(skillDiv);
+    });
+  } catch (error) {
+    console.error('Error rendering skills overview:', error);
+    const container = document.querySelector('.bg-slate-50.border-2.border-blue-200.p-6 .grid.grid-cols-2.gap-4.font-mono.text-sm');
+    if (container) {
+      container.innerHTML = '<div class="text-red-500 p-4 col-span-2">Skills data unavailable</div>';
+    }
+  }
+}
+
 // Main function to load and render all profile data
 async function loadProfileData(token) {
-  // Show loading state for all sections
-  const sections = ['Login', 'FullName', 'Email', 'Campus', 'Level', 'totalXP', 'auditRatioValue'];
-  sections.forEach(section => showLoading(section));
-  
   // Hide any previous errors
   document.getElementById('profileErrorContainer')?.classList.add('hidden');
-  
+
   try {
     const userData = await getUserProfileData(token);
     console.log('User data loaded:', userData);
-    
+
     // Render each section
     renderUserInfo(userData);
     renderXPData(userData);
@@ -383,54 +547,80 @@ async function loadProfileData(token) {
     renderProjectSuccess(userData);
     renderXPProgressChart(userData);
     renderXPByProject(userData);
-    
+    renderSkillsOverview(userData);
   } catch (error) {
     console.error('Failed to load profile data:', error);
     showProfileError(`Failed to load profile data: ${error.message}`);
-    
-    // Show error state for all sections
-    sections.forEach(section => showError(section, 'Data unavailable'));
-  } finally {
-    // Hide loading indicators
-    sections.forEach(section => hideLoading(section));
+    renderXPProgressChart(null);
+    renderProjectSuccess(null);
   }
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-    const storedToken = localStorage.getItem('jwt');
-    const storedLoginTime = localStorage.getItem('loginTime');
+// Login form handling
+document.getElementById('loginForm')?.addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    if (storedToken && storedLoginTime) {
-        const jwt = storedToken;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorMessage = document.getElementById('errorMessage');
 
-        // Decode to get user info
-        try {
-            const payloadBase64 = jwt.split('.')[1];
-            const decodedPayload = JSON.parse(atob(payloadBase64));
-            
-            if (decodedPayload.exp * 1000 < Date.now()) {
-                console.log('Session expired.');
-                Logout();
-                return;
-            }
-            
-            currentUserId = decodedPayload.id;
+  if (!username || !password) {
+    errorMessage.textContent = 'Please enter both username and password.';
+    errorMessage.classList.remove('hidden');
+    return;
+  }
 
-            // Show profile page first (better UX than showing a blank page)
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('profilePage').classList.remove('hidden');
-            
-            // Load profile data
-            loadProfileData(jwt);
-        } catch (error) {
-            console.error('Error decoding JWT:', error);
-            showError('errorMessage', 'Invalid session token. Please log in again.');
-            Logout();
-        }
+  try {
+    const credentials = btoa(`${username}:${password}`);
+
+    const response = await fetch('https://learn.zone01kisumu.ke/api/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${credentials}`
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Invalid username or password.');
+      } else if (response.status === 500) {
+        throw new Error('Server error. Please try again later.');
+      } else {
+        const errorText = await response.text();
+        throw new Error(errorText || `Unexpected error (${response.status}).`);
+      }
     }
+
+    const token = await response.json();
+
+    if (!token) {
+      throw new Error('No token received from server.');
+    }
+
+    localStorage.setItem('jwt_token', token);
+
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('profilePage').classList.remove('hidden');
+
+    await loadProfileData(token);
+
+  } catch (error) {
+    console.error('Login error:', error);
+    errorMessage.textContent = error.message || 'An unexpected error occurred.';
+    errorMessage.classList.remove('hidden');
+  }
 });
 
-// Dark mode toggle
+// Logout button handling
+document.getElementById('logoutBtn')?.addEventListener('click', function () {
+  // Clear token and user data
+  localStorage.removeItem('jwt_token');
+
+  // Show login page and hide profile
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('profilePage').classList.add('hidden');
+});
+
 function toggleDarkMode() {
     isDarkMode = !isDarkMode;
     if (isDarkMode) {
@@ -474,95 +664,29 @@ function toggleDarkMode() {
 document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 document.getElementById('darkModeToggleProfile').addEventListener('click', toggleDarkMode);
 
-// Login form handler
-document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+// Initialize page on load
+document.addEventListener('DOMContentLoaded', async function () {
+  // Setup dark mode toggles
+  setupDarkModeToggle('darkModeToggle');
+  setupDarkModeToggle('darkModeToggleProfile');
 
-    const identifier = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  // Check for existing token
+  const token = localStorage.getItem('jwt_token');
 
-    if (!identifier || !password) {
-        document.getElementById('errorMessage').textContent = 'Please enter both username/email and password.';
-        document.getElementById('errorMessage').classList.remove('hidden');
-        return;
-    }
+  // Check token validity and show appropriate page
+  if (isValidToken(token)) {
+    // Valid token - show profile page
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('profilePage').classList.remove('hidden');
 
-    // Show loading state
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.textContent;
-    submitButton.textContent = 'Signing In...';
-    submitButton.disabled = true;
-
-    try {
-        const credentials = btoa(`${identifier}:${password}`);
-        const response = await fetch('https://learn.zone01kisumu.ke/api/auth/signin', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Basic ${credentials}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Login failed: ${response.status} ${response.statusText}`);
-        }
-
-        const jwt = await response.json();
-        // Store JWT and time in local storage for session management
-        localStorage.setItem('jwt', jwt);
-        localStorage.setItem('loginTime', Date.now());
-
-        // Decode JWT to get user info (just payload part)
-        const payloadBase64 = jwt.split('.')[1];
-        const decodedPayload = JSON.parse(atob(payloadBase64));
-
-        currentUserId = decodedPayload.sub;
-
-        // Hide error and switch to profile page
-        document.getElementById('errorMessage').classList.add('hidden');
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('profilePage').classList.remove('hidden');
-        
-        // Load profile data
-        loadProfileData(jwt);
-
-    } catch (err) {
-        console.error('Login error:', err);
-        document.getElementById('errorMessage').textContent = err.message || 'Login failed. Please check your credentials and try again.';
-        document.getElementById('errorMessage').classList.remove('hidden');
-    } finally {
-        // Restore button state
-        submitButton.textContent = originalButtonText;
-        submitButton.disabled = false;
-    }
-});
-
-function Logout() {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('loginTime');
-    currentUserId = null;
-
-    document.getElementById('profilePage').classList.add('hidden');
+    // Load profile data
+    await loadProfileData(token);
+  } else {
+    // Invalid or no token - show login page
     document.getElementById('loginPage').classList.remove('hidden');
+    document.getElementById('profilePage').classList.add('hidden');
 
-    // Clear form
-    document.getElementById('loginForm').reset();
-    document.getElementById('errorMessage').classList.add('hidden');
-}
-
-// Logout handler
-document.getElementById('logoutBtn').addEventListener('click', Logout);
-
-// Add some interactive hover effects for SVG elements
-document.querySelectorAll('circle, path, polyline').forEach(element => {
-    element.addEventListener('mouseenter', function () {
-        this.style.opacity = '0.5';
-        this.style.transform = 'scale(1.01)';
-        this.style.transformOrigin = 'center';
-        this.style.transition = 'all 0.15s ease';
-    });
-
-    element.addEventListener('mouseleave', function () {
-        this.style.opacity = '1';
-        this.style.transform = 'scale(1)';
-    });
+    // Clear any existing token
+    localStorage.removeItem('jwt_token');
+  }
 });
