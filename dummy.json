@@ -1,0 +1,1418 @@
+{
+  "data": {
+    "user": [
+      {
+        "id": 7248,
+        "login": "hilaokello",
+        "email": "hilaryokello091@gmail.com",
+        "firstName": "Hilary",
+        "lastName": "Okello",
+        "auditRatio": 1.1479137235185515,
+        "totalUp": 2917906,
+        "totalDown": 2541921,
+        "campus": "kisumu",
+        "events": [
+          {
+            "level": 32
+          }
+        ],
+        "transactions": [
+          {
+            "id": 39960,
+            "amount": 5000,
+            "createdAt": "2024-04-18T13:22:35.546907+00:00",
+            "path": "/kisumu/module/go-reloaded",
+            "object": {
+              "name": "go-reloaded",
+              "type": "project"
+            }
+          },
+          {
+            "id": 40793,
+            "amount": 100,
+            "createdAt": "2024-05-03T07:10:08.695453+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-displayalrevm",
+            "object": {
+              "name": "displayalrevm",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 40889,
+            "amount": 200,
+            "createdAt": "2024-05-03T07:26:30.416059+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-max",
+            "object": {
+              "name": "max",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 41053,
+            "amount": 300,
+            "createdAt": "2024-05-03T08:11:10.510686+00:00",
+            "path": "/kisumu/module/checkpoint/reduceint",
+            "object": {
+              "name": "reduceint",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 41099,
+            "amount": 400,
+            "createdAt": "2024-05-03T08:48:38.033999+00:00",
+            "path": "/kisumu/module/checkpoint/foldint",
+            "object": {
+              "name": "foldint",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 42266,
+            "amount": 6125,
+            "createdAt": "2024-05-20T09:59:02.869198+00:00",
+            "path": "/kisumu/module/ascii-art",
+            "object": {
+              "name": "ascii-art",
+              "type": "project"
+            }
+          },
+          {
+            "id": 42714,
+            "amount": 10000,
+            "createdAt": "2024-05-23T11:26:15.979567+00:00",
+            "path": "/kisumu/module/math-skills",
+            "object": {
+              "name": "math-skills",
+              "type": "project"
+            }
+          },
+          {
+            "id": 42853,
+            "amount": 100,
+            "createdAt": "2024-05-24T07:46:05.844092+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-displaylastparam",
+            "object": {
+              "name": "displaylastparam",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 42951,
+            "amount": 200,
+            "createdAt": "2024-05-24T07:53:03.72753+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-countdown",
+            "object": {
+              "name": "countdown",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 43021,
+            "amount": 300,
+            "createdAt": "2024-05-24T08:08:59.040215+00:00",
+            "path": "/kisumu/module/checkpoint/lastword",
+            "object": {
+              "name": "lastword",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 43117,
+            "amount": 400,
+            "createdAt": "2024-05-24T08:40:25.530475+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-tabmult",
+            "object": {
+              "name": "tabmult",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 43176,
+            "amount": 500,
+            "createdAt": "2024-05-24T09:27:01.561535+00:00",
+            "path": "/kisumu/module/checkpoint/romannumbers",
+            "object": {
+              "name": "romannumbers",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 43210,
+            "amount": 600,
+            "createdAt": "2024-05-24T10:30:31.30079+00:00",
+            "path": "/kisumu/module/checkpoint/gcd",
+            "object": {
+              "name": "gcd",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 44564,
+            "amount": 6125,
+            "createdAt": "2024-06-06T10:02:48.484994+00:00",
+            "path": "/kisumu/module/fs",
+            "object": {
+              "name": "ascii-art-fs",
+              "type": "project"
+            }
+          },
+          {
+            "id": 44986,
+            "amount": 100,
+            "createdAt": "2024-06-07T06:37:04.213972+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-hello",
+            "object": {
+              "name": "hello",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 44994,
+            "amount": 200,
+            "createdAt": "2024-06-07T06:38:35.045273+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-strlen",
+            "object": {
+              "name": "strlen",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 45074,
+            "amount": 300,
+            "createdAt": "2024-06-07T07:02:41.671401+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-rot13",
+            "object": {
+              "name": "rot13",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 45120,
+            "amount": 400,
+            "createdAt": "2024-06-07T07:24:40.330928+00:00",
+            "path": "/kisumu/module/checkpoint/foldint",
+            "object": {
+              "name": "foldint",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 45168,
+            "amount": 500,
+            "createdAt": "2024-06-07T07:54:32.784134+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-printbits",
+            "object": {
+              "name": "printbits",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 45217,
+            "amount": 600,
+            "createdAt": "2024-06-07T08:19:56.443229+00:00",
+            "path": "/kisumu/module/checkpoint/gcd",
+            "object": {
+              "name": "gcd",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 45230,
+            "amount": 700,
+            "createdAt": "2024-06-07T08:37:38.965255+00:00",
+            "path": "/kisumu/module/checkpoint/revwstr",
+            "object": {
+              "name": "revwstr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46473,
+            "amount": 100,
+            "createdAt": "2024-06-21T06:16:11.33741+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-paramcount",
+            "object": {
+              "name": "paramcount",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46523,
+            "amount": 200,
+            "createdAt": "2024-06-21T06:20:17.010572+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-max",
+            "object": {
+              "name": "max",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46551,
+            "amount": 300,
+            "createdAt": "2024-06-21T06:23:05.62995+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-firstrune",
+            "object": {
+              "name": "firstrune",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46571,
+            "amount": 400,
+            "createdAt": "2024-06-21T06:25:49.956072+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-compare",
+            "object": {
+              "name": "compare",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46759,
+            "amount": 500,
+            "createdAt": "2024-06-21T07:05:48.530407+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-swapbits",
+            "object": {
+              "name": "swapbits",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46775,
+            "amount": 600,
+            "createdAt": "2024-06-21T07:09:54.22728+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-sortwordarr",
+            "object": {
+              "name": "sortwordarr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46852,
+            "amount": 700,
+            "createdAt": "2024-06-21T07:52:29.675524+00:00",
+            "path": "/kisumu/module/checkpoint/addprimesum",
+            "object": {
+              "name": "addprimesum",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 46897,
+            "amount": 800,
+            "createdAt": "2024-06-21T08:13:57.772012+00:00",
+            "path": "/kisumu/module/checkpoint/deprecated-19-06-2024-atoibase",
+            "object": {
+              "name": "atoibase",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 48051,
+            "amount": 6125,
+            "createdAt": "2024-07-11T11:59:33.422372+00:00",
+            "path": "/kisumu/module/color",
+            "object": {
+              "name": "ascii-art-color",
+              "type": "project"
+            }
+          },
+          {
+            "id": 48765,
+            "amount": 50,
+            "createdAt": "2024-07-19T06:21:45.965382+00:00",
+            "path": "/kisumu/module/checkpoint/onlyf",
+            "object": {
+              "name": "onlyf",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 48869,
+            "amount": 100,
+            "createdAt": "2024-07-19T06:25:08.610878+00:00",
+            "path": "/kisumu/module/checkpoint/rectperimeter",
+            "object": {
+              "name": "rectperimeter",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49001,
+            "amount": 150,
+            "createdAt": "2024-07-19T06:37:18.597895+00:00",
+            "path": "/kisumu/module/checkpoint/repeatalpha",
+            "object": {
+              "name": "repeatalpha",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49104,
+            "amount": 200,
+            "createdAt": "2024-07-19T07:03:25.443358+00:00",
+            "path": "/kisumu/module/checkpoint/fromto",
+            "object": {
+              "name": "fromto",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49328,
+            "amount": 250,
+            "createdAt": "2024-07-19T08:07:40.000972+00:00",
+            "path": "/kisumu/module/checkpoint/inter",
+            "object": {
+              "name": "inter",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49346,
+            "amount": 300,
+            "createdAt": "2024-07-19T08:17:25.016826+00:00",
+            "path": "/kisumu/module/checkpoint/fifthandskip",
+            "object": {
+              "name": "fifthandskip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49370,
+            "amount": 350,
+            "createdAt": "2024-07-19T08:28:00.64508+00:00",
+            "path": "/kisumu/module/checkpoint/revwstr",
+            "object": {
+              "name": "revwstr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 49832,
+            "amount": 9200,
+            "createdAt": "2024-07-22T13:36:12.970459+00:00",
+            "path": "/kisumu/module/ascii-art-web",
+            "object": {
+              "name": "ascii-art-web",
+              "type": "project"
+            }
+          },
+          {
+            "id": 50760,
+            "amount": 9200,
+            "createdAt": "2024-07-25T13:18:23.270665+00:00",
+            "path": "/kisumu/module/stylize",
+            "object": {
+              "name": "ascii-art-web-stylize",
+              "type": "project"
+            }
+          },
+          {
+            "id": 51723,
+            "amount": 5000,
+            "createdAt": "2024-07-28T06:52:27.34215+00:00",
+            "path": "/kisumu/module/tetris-optimizer",
+            "object": {
+              "name": "tetris-optimizer",
+              "type": "project"
+            }
+          },
+          {
+            "id": 54352,
+            "amount": 9200,
+            "createdAt": "2024-08-12T08:35:43.185475+00:00",
+            "path": "/kisumu/module/dockerize",
+            "object": {
+              "name": "ascii-art-web-dockerize",
+              "type": "project"
+            }
+          },
+          {
+            "id": 54732,
+            "amount": 5000,
+            "createdAt": "2024-08-13T12:16:07.803929+00:00",
+            "path": "/kisumu/module/guess-it-1",
+            "object": {
+              "name": "guess-it-1",
+              "type": "project"
+            }
+          },
+          {
+            "id": 55925,
+            "amount": 9200,
+            "createdAt": "2024-08-16T13:55:49.38706+00:00",
+            "path": "/kisumu/module/exportfile",
+            "object": {
+              "name": "ascii-art-web-export-file",
+              "type": "project"
+            }
+          },
+          {
+            "id": 56175,
+            "amount": 10000,
+            "createdAt": "2024-08-20T09:20:19.375789+00:00",
+            "path": "/kisumu/module/linear-stats",
+            "object": {
+              "name": "linear-stats",
+              "type": "project"
+            }
+          },
+          {
+            "id": 56870,
+            "amount": 50,
+            "createdAt": "2024-08-23T06:01:47.961951+00:00",
+            "path": "/kisumu/module/checkpoint/onlyb",
+            "object": {
+              "name": "onlyb",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57076,
+            "amount": 100,
+            "createdAt": "2024-08-23T06:05:43.971571+00:00",
+            "path": "/kisumu/module/checkpoint/printif",
+            "object": {
+              "name": "printif",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57226,
+            "amount": 150,
+            "createdAt": "2024-08-23T06:14:07.596916+00:00",
+            "path": "/kisumu/module/checkpoint/repeatalpha",
+            "object": {
+              "name": "repeatalpha",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57364,
+            "amount": 200,
+            "createdAt": "2024-08-23T06:29:31.620877+00:00",
+            "path": "/kisumu/module/checkpoint/fromto",
+            "object": {
+              "name": "fromto",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57508,
+            "amount": 250,
+            "createdAt": "2024-08-23T06:56:28.517937+00:00",
+            "path": "/kisumu/module/checkpoint/reversestrcap",
+            "object": {
+              "name": "reversestrcap",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57577,
+            "amount": 300,
+            "createdAt": "2024-08-23T07:14:09.51535+00:00",
+            "path": "/kisumu/module/checkpoint/revconcatalternate",
+            "object": {
+              "name": "revconcatalternate",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57615,
+            "amount": 350,
+            "createdAt": "2024-08-23T07:22:39.006147+00:00",
+            "path": "/kisumu/module/checkpoint/wordflip",
+            "object": {
+              "name": "wordflip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57657,
+            "amount": 400,
+            "createdAt": "2024-08-23T07:38:06.208723+00:00",
+            "path": "/kisumu/module/checkpoint/piglatin",
+            "object": {
+              "name": "piglatin",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57732,
+            "amount": 450,
+            "createdAt": "2024-08-23T07:56:27.887797+00:00",
+            "path": "/kisumu/module/checkpoint/brackets",
+            "object": {
+              "name": "brackets",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 57844,
+            "amount": 500,
+            "createdAt": "2024-08-23T08:33:59.770987+00:00",
+            "path": "/kisumu/module/checkpoint/brainfuck",
+            "object": {
+              "name": "brainfuck",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60418,
+            "amount": 50,
+            "createdAt": "2024-08-30T06:02:39.791865+00:00",
+            "path": "/kisumu/module/checkpoint/onlyz",
+            "object": {
+              "name": "onlyz",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60494,
+            "amount": 100,
+            "createdAt": "2024-08-30T06:04:35.032481+00:00",
+            "path": "/kisumu/module/checkpoint/printifnot",
+            "object": {
+              "name": "printifnot",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60580,
+            "amount": 150,
+            "createdAt": "2024-08-30T06:07:41.216832+00:00",
+            "path": "/kisumu/module/checkpoint/fishandchips",
+            "object": {
+              "name": "fishandchips",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60795,
+            "amount": 200,
+            "createdAt": "2024-08-30T06:38:50.673766+00:00",
+            "path": "/kisumu/module/checkpoint/printmemory",
+            "object": {
+              "name": "printmemory",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60817,
+            "amount": 250,
+            "createdAt": "2024-08-30T06:48:15.611362+00:00",
+            "path": "/kisumu/module/checkpoint/inter",
+            "object": {
+              "name": "inter",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60892,
+            "amount": 300,
+            "createdAt": "2024-08-30T07:17:53.363577+00:00",
+            "path": "/kisumu/module/checkpoint/notdecimal",
+            "object": {
+              "name": "notdecimal",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60931,
+            "amount": 350,
+            "createdAt": "2024-08-30T07:26:11.571874+00:00",
+            "path": "/kisumu/module/checkpoint/revwstr",
+            "object": {
+              "name": "revwstr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 60991,
+            "amount": 400,
+            "createdAt": "2024-08-30T07:58:02.625963+00:00",
+            "path": "/kisumu/module/checkpoint/romannumbers",
+            "object": {
+              "name": "romannumbers",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 69456,
+            "amount": 290000,
+            "createdAt": "2024-09-26T13:54:15.777345+00:00",
+            "path": "/kisumu/module/wget",
+            "object": {
+              "name": "wget",
+              "type": "project"
+            }
+          },
+          {
+            "id": 69527,
+            "amount": 70000,
+            "createdAt": "2024-09-26T14:33:35.971245+00:00",
+            "path": "/kisumu/module/piscine-js",
+            "object": {
+              "name": "Piscine JS",
+              "type": "piscine"
+            }
+          },
+          {
+            "id": 73723,
+            "amount": 50,
+            "createdAt": "2024-10-11T06:08:19.833015+00:00",
+            "path": "/kisumu/module/checkpoint/only1",
+            "object": {
+              "name": "only1",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 73767,
+            "amount": 100,
+            "createdAt": "2024-10-11T06:10:31.360397+00:00",
+            "path": "/kisumu/module/checkpoint/printifnot",
+            "object": {
+              "name": "printifnot",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 73835,
+            "amount": 150,
+            "createdAt": "2024-10-11T08:41:49.864613+00:00",
+            "path": "/kisumu/module/checkpoint/digitlen",
+            "object": {
+              "name": "digitlen",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75386,
+            "amount": 50,
+            "createdAt": "2024-10-18T06:01:15.207033+00:00",
+            "path": "/kisumu/module/checkpoint/onlyf",
+            "object": {
+              "name": "onlyf",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75482,
+            "amount": 100,
+            "createdAt": "2024-10-18T06:04:08.43128+00:00",
+            "path": "/kisumu/module/checkpoint/countcharacter",
+            "object": {
+              "name": "countcharacter",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75630,
+            "amount": 150,
+            "createdAt": "2024-10-18T06:20:48.993525+00:00",
+            "path": "/kisumu/module/checkpoint/hashcode",
+            "object": {
+              "name": "hashcode",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75650,
+            "amount": 200,
+            "createdAt": "2024-10-18T06:26:37.165243+00:00",
+            "path": "/kisumu/module/checkpoint/itoa",
+            "object": {
+              "name": "itoa",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75660,
+            "amount": 250,
+            "createdAt": "2024-10-18T06:30:21.752103+00:00",
+            "path": "/kisumu/module/checkpoint/concatslice",
+            "object": {
+              "name": "concatslice",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75770,
+            "amount": 300,
+            "createdAt": "2024-10-18T07:07:47.958413+00:00",
+            "path": "/kisumu/module/checkpoint/slice",
+            "object": {
+              "name": "slice",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75784,
+            "amount": 350,
+            "createdAt": "2024-10-18T07:15:11.192824+00:00",
+            "path": "/kisumu/module/checkpoint/revwstr",
+            "object": {
+              "name": "revwstr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75833,
+            "amount": 400,
+            "createdAt": "2024-10-18T07:45:55.992185+00:00",
+            "path": "/kisumu/module/checkpoint/options",
+            "object": {
+              "name": "options",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 75928,
+            "amount": 450,
+            "createdAt": "2024-10-18T08:36:53.866634+00:00",
+            "path": "/kisumu/module/checkpoint/rpncalc",
+            "object": {
+              "name": "rpncalc",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 77160,
+            "amount": 5000,
+            "createdAt": "2024-10-23T13:51:32.130257+00:00",
+            "path": "/kisumu/module/guess-it-2",
+            "object": {
+              "name": "guess-it-2",
+              "type": "project"
+            }
+          },
+          {
+            "id": 77304,
+            "amount": 24500,
+            "createdAt": "2024-10-24T08:43:50.20994+00:00",
+            "path": "/kisumu/module/groupie-tracker",
+            "object": {
+              "name": "groupie-tracker",
+              "type": "project"
+            }
+          },
+          {
+            "id": 77614,
+            "amount": 50,
+            "createdAt": "2024-10-25T06:12:48.122979+00:00",
+            "path": "/kisumu/module/checkpoint/only1",
+            "object": {
+              "name": "only1",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 77704,
+            "amount": 100,
+            "createdAt": "2024-10-25T06:14:58.962088+00:00",
+            "path": "/kisumu/module/checkpoint/countalpha",
+            "object": {
+              "name": "countalpha",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 77905,
+            "amount": 150,
+            "createdAt": "2024-10-25T06:35:27.479234+00:00",
+            "path": "/kisumu/module/checkpoint/cameltosnakecase",
+            "object": {
+              "name": "cameltosnakecase",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 77965,
+            "amount": 200,
+            "createdAt": "2024-10-25T06:48:53.97797+00:00",
+            "path": "/kisumu/module/checkpoint/fromto",
+            "object": {
+              "name": "fromto",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 78003,
+            "amount": 250,
+            "createdAt": "2024-10-25T06:58:58.131838+00:00",
+            "path": "/kisumu/module/checkpoint/hiddenp",
+            "object": {
+              "name": "hiddenp",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 78146,
+            "amount": 300,
+            "createdAt": "2024-10-25T07:57:32.264705+00:00",
+            "path": "/kisumu/module/checkpoint/revconcatalternate",
+            "object": {
+              "name": "revconcatalternate",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 78180,
+            "amount": 350,
+            "createdAt": "2024-10-25T08:38:07.522413+00:00",
+            "path": "/kisumu/module/checkpoint/wordflip",
+            "object": {
+              "name": "wordflip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 78220,
+            "amount": 400,
+            "createdAt": "2024-10-25T09:00:29.811982+00:00",
+            "path": "/kisumu/module/checkpoint/romannumbers",
+            "object": {
+              "name": "romannumbers",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 78246,
+            "amount": 450,
+            "createdAt": "2024-10-25T09:23:34.264414+00:00",
+            "path": "/kisumu/module/checkpoint/brackets",
+            "object": {
+              "name": "brackets",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 79011,
+            "amount": 5000,
+            "createdAt": "2024-10-29T13:55:26.136725+00:00",
+            "path": "/kisumu/module/git",
+            "object": {
+              "name": "git",
+              "type": "project"
+            }
+          },
+          {
+            "id": 79637,
+            "amount": 6125,
+            "createdAt": "2024-11-01T07:47:21.29098+00:00",
+            "path": "/kisumu/module/output",
+            "object": {
+              "name": "ascii-art-output",
+              "type": "project"
+            }
+          },
+          {
+            "id": 79980,
+            "amount": 75250,
+            "createdAt": "2024-11-04T14:14:49.574582+00:00",
+            "path": "/kisumu/module/atm-management-system",
+            "object": {
+              "name": "atm-management-system",
+              "type": "project"
+            }
+          },
+          {
+            "id": 80636,
+            "amount": 50,
+            "createdAt": "2024-11-08T06:01:45.390106+00:00",
+            "path": "/kisumu/module/checkpoint/onlyf",
+            "object": {
+              "name": "onlyf",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80720,
+            "amount": 100,
+            "createdAt": "2024-11-08T06:04:42.293619+00:00",
+            "path": "/kisumu/module/checkpoint/printifnot",
+            "object": {
+              "name": "printifnot",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80764,
+            "amount": 150,
+            "createdAt": "2024-11-08T06:09:55.710805+00:00",
+            "path": "/kisumu/module/checkpoint/searchreplace",
+            "object": {
+              "name": "searchreplace",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80860,
+            "amount": 200,
+            "createdAt": "2024-11-08T06:36:27.300594+00:00",
+            "path": "/kisumu/module/checkpoint/printmemory",
+            "object": {
+              "name": "printmemory",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80890,
+            "amount": 250,
+            "createdAt": "2024-11-08T06:44:05.599923+00:00",
+            "path": "/kisumu/module/checkpoint/chunk",
+            "object": {
+              "name": "chunk",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80922,
+            "amount": 300,
+            "createdAt": "2024-11-08T07:03:00.743213+00:00",
+            "path": "/kisumu/module/checkpoint/notdecimal",
+            "object": {
+              "name": "notdecimal",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80940,
+            "amount": 350,
+            "createdAt": "2024-11-08T07:11:00.870724+00:00",
+            "path": "/kisumu/module/checkpoint/wordflip",
+            "object": {
+              "name": "wordflip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 80984,
+            "amount": 400,
+            "createdAt": "2024-11-08T07:33:41.468146+00:00",
+            "path": "/kisumu/module/checkpoint/options",
+            "object": {
+              "name": "options",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 81006,
+            "amount": 450,
+            "createdAt": "2024-11-08T07:50:06.490859+00:00",
+            "path": "/kisumu/module/checkpoint/brackets",
+            "object": {
+              "name": "brackets",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 81528,
+            "amount": 12250,
+            "createdAt": "2024-11-12T12:28:23.173797+00:00",
+            "path": "/kisumu/module/net-cat",
+            "object": {
+              "name": "net-cat",
+              "type": "project"
+            }
+          },
+          {
+            "id": 81651,
+            "amount": 34375,
+            "createdAt": "2024-11-13T14:00:49.601148+00:00",
+            "path": "/kisumu/module/lem-in",
+            "object": {
+              "name": "lem-in",
+              "type": "project"
+            }
+          },
+          {
+            "id": 82583,
+            "amount": 50,
+            "createdAt": "2024-11-22T06:02:30.960315+00:00",
+            "path": "/kisumu/module/checkpoint/onlyb",
+            "object": {
+              "name": "onlyb",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 82673,
+            "amount": 100,
+            "createdAt": "2024-11-22T06:03:59.556094+00:00",
+            "path": "/kisumu/module/checkpoint/rectperimeter",
+            "object": {
+              "name": "rectperimeter",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 82814,
+            "amount": 150,
+            "createdAt": "2024-11-22T06:11:02.580188+00:00",
+            "path": "/kisumu/module/checkpoint/firstword",
+            "object": {
+              "name": "firstword",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 83122,
+            "amount": 200,
+            "createdAt": "2024-11-22T07:18:44.856661+00:00",
+            "path": "/kisumu/module/checkpoint/zipstring",
+            "object": {
+              "name": "zipstring",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 83154,
+            "amount": 250,
+            "createdAt": "2024-11-22T07:25:30.581955+00:00",
+            "path": "/kisumu/module/checkpoint/concatslice",
+            "object": {
+              "name": "concatslice",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 83190,
+            "amount": 300,
+            "createdAt": "2024-11-22T07:37:13.569537+00:00",
+            "path": "/kisumu/module/checkpoint/fifthandskip",
+            "object": {
+              "name": "fifthandskip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 83222,
+            "amount": 350,
+            "createdAt": "2024-11-22T07:57:39.591737+00:00",
+            "path": "/kisumu/module/checkpoint/revwstr",
+            "object": {
+              "name": "revwstr",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 83275,
+            "amount": 400,
+            "createdAt": "2024-11-22T08:23:21.367064+00:00",
+            "path": "/kisumu/module/checkpoint/romannumbers",
+            "object": {
+              "name": "romannumbers",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 84375,
+            "amount": 12250,
+            "createdAt": "2024-12-04T09:42:19.194113+00:00",
+            "path": "/kisumu/module/visualizations",
+            "object": {
+              "name": "groupie-tracker-visualizations",
+              "type": "project"
+            }
+          },
+          {
+            "id": 85708,
+            "amount": 140000,
+            "createdAt": "2024-12-19T07:05:16.485222+00:00",
+            "path": "/kisumu/module/piscine-ux",
+            "object": {
+              "name": "piscine-ux",
+              "type": "piscine"
+            }
+          },
+          {
+            "id": 85918,
+            "amount": 12250,
+            "createdAt": "2024-12-19T08:36:31.762834+00:00",
+            "path": "/kisumu/module/search-bar",
+            "object": {
+              "name": "groupie-tracker-search-bar",
+              "type": "project"
+            }
+          },
+          {
+            "id": 89743,
+            "amount": 76250,
+            "createdAt": "2025-01-29T09:39:29.377542+00:00",
+            "path": "/kisumu/module/forum",
+            "object": {
+              "name": "forum",
+              "type": "project"
+            }
+          },
+          {
+            "id": 90645,
+            "amount": 19100,
+            "createdAt": "2025-02-03T13:41:47.580757+00:00",
+            "path": "/kisumu/module/image-upload",
+            "object": {
+              "name": "forum-image-upload",
+              "type": "project"
+            }
+          },
+          {
+            "id": 93055,
+            "amount": 105000,
+            "createdAt": "2025-02-09T14:50:15.632133+00:00",
+            "path": "/kisumu/module/piscine-ui",
+            "object": {
+              "name": "piscine-ui",
+              "type": "piscine"
+            }
+          },
+          {
+            "id": 93960,
+            "amount": 19100,
+            "createdAt": "2025-02-11T11:43:52.092425+00:00",
+            "path": "/kisumu/module/authentication",
+            "object": {
+              "name": "forum-authentication",
+              "type": "project"
+            }
+          },
+          {
+            "id": 101207,
+            "amount": 147000,
+            "createdAt": "2025-02-26T08:46:07.200432+00:00",
+            "path": "/kisumu/module/make-your-game",
+            "object": {
+              "name": "make-your-game",
+              "type": "project"
+            }
+          },
+          {
+            "id": 102551,
+            "amount": 50,
+            "createdAt": "2025-02-28T06:02:34.947651+00:00",
+            "path": "/kisumu/module/checkpoint/only1",
+            "object": {
+              "name": "only1",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 102677,
+            "amount": 100,
+            "createdAt": "2025-02-28T06:07:16.517159+00:00",
+            "path": "/kisumu/module/checkpoint/countalpha",
+            "object": {
+              "name": "countalpha",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103051,
+            "amount": 150,
+            "createdAt": "2025-02-28T06:38:40.387286+00:00",
+            "path": "/kisumu/module/checkpoint/gcd",
+            "object": {
+              "name": "gcd",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103094,
+            "amount": 200,
+            "createdAt": "2025-02-28T06:44:22.290897+00:00",
+            "path": "/kisumu/module/checkpoint/iscapitalized",
+            "object": {
+              "name": "iscapitalized",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103216,
+            "amount": 250,
+            "createdAt": "2025-02-28T07:08:11.332053+00:00",
+            "path": "/kisumu/module/checkpoint/chunk",
+            "object": {
+              "name": "chunk",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103272,
+            "amount": 300,
+            "createdAt": "2025-02-28T07:22:23.467147+00:00",
+            "path": "/kisumu/module/checkpoint/fifthandskip",
+            "object": {
+              "name": "fifthandskip",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103354,
+            "amount": 350,
+            "createdAt": "2025-02-28T07:44:33.341818+00:00",
+            "path": "/kisumu/module/checkpoint/rostring",
+            "object": {
+              "name": "rostring",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103478,
+            "amount": 400,
+            "createdAt": "2025-02-28T08:24:32.272466+00:00",
+            "path": "/kisumu/module/checkpoint/itoabase",
+            "object": {
+              "name": "itoabase",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 103524,
+            "amount": 450,
+            "createdAt": "2025-02-28T08:39:27.293273+00:00",
+            "path": "/kisumu/module/checkpoint/brackets",
+            "object": {
+              "name": "brackets",
+              "type": "exercise"
+            }
+          },
+          {
+            "id": 123738,
+            "amount": 103500,
+            "createdAt": "2025-05-12T12:52:41.923937+00:00",
+            "path": "/kisumu/module/real-time-forum",
+            "object": {
+              "name": "real-time-forum",
+              "type": "project"
+            }
+          },
+          {
+            "id": 124117,
+            "amount": 51750,
+            "createdAt": "2025-05-19T10:00:11.590123+00:00",
+            "path": "/kisumu/module/typing-in-progress",
+            "object": {
+              "name": "real-time-forum-typing-in-progress",
+              "type": "project"
+            }
+          }
+        ],
+        "passedProjects": {
+          "aggregate": {
+            "count": 28
+          }
+        },
+        "failedProjects": {
+          "aggregate": {
+            "count": 0
+          }
+        },
+        "averageGrade": {
+          "aggregate": {
+            "avg": {
+              "grade": 1.6806451797019748
+            }
+          }
+        },
+        "skills": [
+          {
+            "type": "skill_ai",
+            "amount": 10,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_algo",
+            "amount": 35,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_back-end",
+            "amount": 50,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_c",
+            "amount": 30,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_css",
+            "amount": 15,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_docker",
+            "amount": 15,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_front-end",
+            "amount": 45,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_game",
+            "amount": 10,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_git",
+            "amount": 50,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_go",
+            "amount": 55,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_html",
+            "amount": 35,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_js",
+            "amount": 40,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_prog",
+            "amount": 100,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_sql",
+            "amount": 25,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_stats",
+            "amount": 25,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_sys-admin",
+            "amount": 10,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_tcp",
+            "amount": 30,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_unix",
+            "amount": 20,
+            "__typename": "transaction"
+          },
+          {
+            "type": "skill_ux",
+            "amount": 45,
+            "__typename": "transaction"
+          }
+        ]
+      }
+    ]
+  }
+}
