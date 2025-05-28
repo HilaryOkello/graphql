@@ -13,15 +13,6 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <title>LoCK iN</title>
-    <style>
-        .loading {
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-    </style>
 </head>
 
 <body class="bg-slate-200 text-blue-200 min-h-screen transition-colors duration-300">
@@ -107,11 +98,11 @@
             <div class="bg-slate-50 border-2 border-blue-200 p-6">
                 <h2 class="text-xl font-bold uppercase mb-4 text-slate-900">User Info</h2>
                 <div class="space-y-3 font-mono">
-                    <div><span class="text-slate-500">Login:</span> <span id="Login" class="font-bold text-blue-600">Loading...</span></div>
-                    <div><span class="text-slate-500">Full Name:</span> <span id="FullName" class="font-bold text-blue-600">Loading...</span></div>
-                    <div><span class="text-slate-500">Email:</span> <span id="Email" class="font-medium text-blue-600">Loading...</span></div>
-                    <div><span class="text-slate-500">Campus:</span> <span id="Campus" class="font-medium text-blue-600">Loading...</span></div>
-                    <div><span class="text-slate-500">Level:</span> <span id="Level" class="text-green-500 font-bold">Loading...</span>
+                    <div><span class="text-slate-500">Login:</span> <span id="Login" class="font-bold text-blue-600">-</span></div>
+                    <div><span class="text-slate-500">Full Name:</span> <span id="FullName" class="font-bold text-blue-600">-</span></div>
+                    <div><span class="text-slate-500">Email:</span> <span id="Email" class="font-medium text-blue-600">-</span></div>
+                    <div><span class="text-slate-500">Campus:</span> <span id="Campus" class="font-medium text-blue-600">-</span></div>
+                    <div><span class="text-slate-500">Level:</span> <span id="Level" class="text-green-500 font-bold">-</span>
                     </div>
                 </div>
             </div>
@@ -120,12 +111,12 @@
             <div class="bg-slate-50 border-2 border-blue-200 p-6">
                 <h2 class="text-xl font-bold uppercase mb-4 text-slate-900">Experience</h2>
                 <div class="space-y-3 font-mono">
-                    <div id="totalXP" class="text-3xl font-bold text-blue-600">Loading...</div>
+                    <div id="totalXP" class="text-3xl font-bold text-blue-600">-</div>
                     <div class="text-sm text-slate-500">Total Earned</div>
                     <div class="bg-slate-200 h-3 border-2 border-blue-200">
                         <div id="xpProgress" class="bg-green-500 h-full" style="width: 0%"></div>
                     </div>
-                    <div id="xpNextLevel" class="text-sm text-slate-500">Loading...</div>
+                    <div id="xpNextLevel" class="text-sm text-slate-500">-</div>
                 </div>
             </div>
 
@@ -133,8 +124,8 @@
             <div class="bg-slate-50 border-2 border-blue-200 p-6">
                 <h2 class="text-xl font-bold uppercase mb-4 text-slate-900">Audit Ratio</h2>
                 <div class="space-y-3 font-mono">
-                    <div id="auditRatioValue" class="text-3xl font-bold text-green-500">Loading...</div>
-                    <div id="auditSummary" class="text-sm text-slate-500">Loading...</div>
+                    <div id="auditRatioValue" class="text-3xl font-bold text-green-500">-</div>
+                    <div id="auditSummary" class="text-sm text-slate-500">-</div>
                     <div class="grid grid-cols-2 gap-2 text-sm">
                         <div class="bg-green-100 border border-green-500 p-2 text-center">
                             <div id="auditsGiven" class="font-bold text-green-600">-</div>
@@ -160,45 +151,7 @@
                     <h3 class="text-lg font-bold uppercase mb-6 text-slate-900">XP Progress Over Time</h3>
                     <div class="h-64">
                         <svg id="xpProgressChart" viewBox="0 0 400 200" class="w-full h-full">
-                            <!-- Grid lines -->
-                            <defs>
-                                <pattern id="grid" width="40" height="20" patternUnits="userSpaceOnUse">
-                                    <path d="M 40 0 L 0 0 0 20" fill="none" stroke="#cbd5e1" stroke-width="1" />
-                                </pattern>
-                            </defs>
-                            <rect width="400" height="200" fill="url(#grid)" />
-
-                            <!-- XP Line Chart -->
-                            <polyline fill="none" stroke="#2563eb" stroke-width="3"
-                                points="20,180 60,160 100,140 140,120 180,90 220,80 260,60 300,40 340,20 380,10" />
-
-                            <!-- Data points -->
-                            <circle cx="20" cy="180" r="4" fill="#2563eb" />
-                            <circle cx="60" cy="160" r="4" fill="#2563eb" />
-                            <circle cx="100" cy="140" r="4" fill="#2563eb" />
-                            <circle cx="140" cy="120" r="4" fill="#2563eb" />
-                            <circle cx="180" cy="90" r="4" fill="#2563eb" />
-                            <circle cx="220" cy="80" r="4" fill="#2563eb" />
-                            <circle cx="260" cy="60" r="4" fill="#2563eb" />
-                            <circle cx="300" cy="40" r="4" fill="#2563eb" />
-                            <circle cx="340" cy="20" r="4" fill="#2563eb" />
-                            <circle cx="380" cy="10" r="4" fill="#2563eb" />
-
-                            <!-- Labels -->
-                            <text x="20" y="195" text-anchor="middle" data-type="month"
-                                class="text-xs font-mono fill-slate-500">Jan</text>
-                            <text x="100" y="195" text-anchor="middle" data-type="month"
-                                class="text-xs font-mono fill-slate-500">Mar</text>
-                            <text x="180" y="195" text-anchor="middle" data-type="month"
-                                class="text-xs font-mono fill-slate-500">May</text>
-                            <text x="260" y="195" text-anchor="middle" data-type="month"
-                                class="text-xs font-mono fill-slate-500">Jul</text>
-                            <text x="340" y="195" text-anchor="middle" data-type="month"
-                                class="text-xs font-mono fill-slate-500">Sep</text>
-
-                            <text x="5" y="185" data-type="y-value" class="text-xs font-mono fill-slate-500">0</text>
-                            <text x="5" y="105" data-type="y-value" class="text-xs font-mono fill-slate-500">25k</text>
-                            <text x="5" y="25" data-type="y-value" class="text-xs font-mono fill-slate-500">50k</text>
+                            <!-- Chart will be dynamically generated -->
                         </svg>
                     </div>
                 </div>
@@ -208,17 +161,17 @@
                     <h3 class="text-lg font-bold uppercase mb-6 text-slate-900">Project Success Ratio</h3>
                     <div class="h-64 flex items-center justify-center">
                         <svg viewBox="0 0 200 200" class="w-96 h-96">
-                            <!-- Success slice (75%) -->
+                            <!-- Success slice -->
                             <path id="successSlice" d="M 100 100 L 100 50 A 50 50 0 1 1 135.35 164.64 Z" fill="#22C55E" stroke="#374151"
                                 stroke-width="3" />
-                            <!-- Fail slice (25%) -->
+                            <!-- Fail slice -->
                             <path id="failSlice" d="M 100 100 L 135.35 164.64 A 50 50 0 0 1 100 50 Z" fill="#ef4444" stroke="#374151"
                                 stroke-width="3" />
 
                             <!-- Center circle -->
                             <circle cx="100" cy="100" r="25" fill="#f8fafc" stroke="#374151" stroke-width="3" />
                             <text id="projectSuccessRate" x="100" y="105" text-anchor="middle"
-                                class="text-sm font-bold font-mono fill-slate-900">Loading...</text>
+                                class="text-sm font-bold font-mono fill-slate-900">-</text>
                         </svg>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-4 font-mono text-sm">
@@ -238,72 +191,15 @@
                     <h3 class="text-lg font-bold uppercase mb-6 text-slate-900">XP by Project (Top 5)</h3>
                     <div id="xpByProjectContainer" class="space-y-4">
                         <!-- Dynamic content will be inserted here -->
-                        <div class="text-center text-slate-500 py-8">Loading project data...</div>
+                        <div class="text-center text-slate-500 py-8"></div>
                     </div>
                 </div>
 
                 <!-- Skills Radar -->
                 <div class="bg-slate-50 border-2 border-blue-200 p-6">
                     <h3 class="text-lg font-bold uppercase mb-6 text-slate-900">Skills Overview</h3>
-                    <div class="grid grid-cols-2 gap-4 font-mono text-sm">
-                        <div class="space-y-3">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">Go</span>
-                                    <span class="text-blue-600 font-bold">92%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-blue-600 h-full" style="width: 92%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">JavaScript</span>
-                                    <span class="text-green-500 font-bold">85%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-green-500 h-full" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">HTML/CSS</span>
-                                    <span class="text-purple-500 font-bold">78%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-purple-500 h-full" style="width: 78%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">SQL</span>
-                                    <span class="text-yellow-600 font-bold">65%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-yellow-500 h-full" style="width: 65%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">Docker</span>
-                                    <span class="text-red-500 font-bold">70%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-red-500 h-full" style="width: 70%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-slate-500">GraphQL</span>
-                                    <span class="text-cyan-500 font-bold">88%</span>
-                                </div>
-                                <div class="bg-slate-200 h-2 border border-blue-200">
-                                    <div class="bg-cyan-500 h-full" style="width: 88%"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="skillsOverview" class="grid grid-cols-2 gap-4 font-mono text-sm">
+                        <!-- Skills will be dynamically generated -->
                     </div>
                 </div>
             </div>
