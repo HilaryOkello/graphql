@@ -89,10 +89,9 @@ function renderUserInfo(userData) {
     document.getElementById('FullName').textContent = userData.userInfo.fullName || 'N/A';
     document.getElementById('Email').textContent = userData.userInfo.email || 'N/A';
     document.getElementById('Campus').textContent = userData.userInfo.campus || 'N/A';
-    document.getElementById('Level').textContent = userData.userInfo.level || 'N/A';
   } catch (error) {
     console.error('Error rendering user info:', error);
-    showProfileError(`Failed to load profile data: ${error.message}`);
+    showProfileError(`Problem loading profile data: ${error.message}`);
   }
 }
 
@@ -104,28 +103,36 @@ function renderXPData(userData) {
     }
 
     const xpElement = document.getElementById('totalXP');
-    const xpProgressElement = document.getElementById('xpProgress');
-    const xpNextLevelElement = document.getElementById('xpNextLevel');
+    const levelElement = document.getElementById('level');
+    const averageGradeElement = document.getElementById('averageGrade');
+    const currProjectElement = document.getElementById('currentProjects');
 
     if (xpElement) {
       xpElement.textContent = `${userData.xp.total.toLocaleString()} XP`;
     }
 
-    // Calculate progress to next level (simplified example)
-    const currentLevel = parseInt(userData.userInfo.level) || 0;
-    const nextLevelXP = (currentLevel + 1) * 10000; // Simplified calculation
-    const currentLevelXP = currentLevel * 10000;
-    const xpToNextLevel = nextLevelXP - currentLevelXP;
-    const currentProgress = userData.xp.total - currentLevelXP;
-    const progressPercentage = Math.min(Math.round((currentProgress / xpToNextLevel) * 100), 100);
-
-    if (xpProgressElement) {
-      xpProgressElement.style.width = `${progressPercentage}%`;
+    if (levelElement) {
+      levelElement.textContent = userData.userInfo.level || 'N/A';
     }
 
-    if (xpNextLevelElement) {
-      xpNextLevelElement.textContent = `${progressPercentage}% to next level`;
+    if (averageGradeElement) {
+      averageGradeElement.textContent = userData.averageGrade ? userData.averageGrade.toFixed(2) : 'N/A';
     }
+
+    if (currProjectElement) {
+      if (userData.currentProjects && userData.currentProjects.length > 0) {
+        currProjectElement.innerHTML = '';
+        userData.currentProjects.slice(0, 3).forEach((project, index) => {
+          const projectDiv = document.createElement('div');
+          projectDiv.className = 'text-sm text-slate-500';
+          projectDiv.textContent = `${index + 1}. ${project.name} (since ${project.daysSinceCreated} days ago)`;
+          currProjectElement.appendChild(projectDiv);
+        });
+      } else {
+        currProjectElement.textContent = 'No current projects';
+      }
+    }
+
   } catch (error) {
     console.error('Error rendering XP data:', error);
     showProfileError(`Failed to load profile data: ${error.message}`);
@@ -148,22 +155,17 @@ function renderAuditRatio(userData) {
     const ratioElement = document.getElementById('auditRatioValue');
     const givenElement = document.getElementById('auditsGiven');
     const receivedElement = document.getElementById('auditsReceived');
-    const summaryElement = document.getElementById('auditSummary');
 
     if (ratioElement) {
       ratioElement.textContent = userData.auditRatio.ratio.toFixed(2);
     }
 
     if (givenElement) {
-      givenElement.textContent = userData.auditRatio.given;
+      givenElement.textContent = userData.auditRatio.giventoLocaleString();
     }
 
     if (receivedElement) {
-      receivedElement.textContent = userData.auditRatio.received;
-    }
-
-    if (summaryElement) {
-      summaryElement.textContent = `Done: ${userData.auditRatio.given} | Received: ${userData.auditRatio.received}`;
+      receivedElement.textContent = userData.auditRatio.receivedtoLocaleString();
     }
   } catch (error) {
     console.error('Error rendering audit ratio:', error);
@@ -173,6 +175,7 @@ function renderAuditRatio(userData) {
 
 // Render Project Success Ratio
 function renderProjectSuccess(userData) {
+  console.log("Rendering project success with userData: ", userData);
   try {
     if (!userData || !userData.projects) {
       throw new Error('Project data not available');
@@ -244,14 +247,6 @@ function renderProjectSuccess(userData) {
   } catch (error) {
     console.error('Error rendering project success:', error);
   }
-}
-
-// Helper function for pie chart path calculation
-function describeArc(x, y, radius, startAngle, endAngle) {
-  const start = polarToCartesian(x, y, radius, endAngle);
-  const end = polarToCartesian(x, y, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-  return `A ${radius} ${radius} 0 ${largeArcFlag} 0 ${start.x} ${start.y}`;
 }
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -622,42 +617,42 @@ document.getElementById('logoutBtn')?.addEventListener('click', function () {
 });
 
 function toggleDarkMode() {
-    isDarkMode = !isDarkMode;
-    if (isDarkMode) {
-        document.body.className = 'bg-slate-900 text-slate-300 min-h-screen transition-colors duration-300';
-        // Update all cards
-        document.querySelectorAll('.bg-slate-50').forEach(el => {
-            el.className = el.className.replace('bg-slate-50', 'bg-slate-800');
-        });
-        document.querySelectorAll('.border-blue-200').forEach(el => {
-            el.className = el.className.replace('border-blue-200', 'border-slate-600');
-        });
-        document.querySelectorAll('.text-slate-900').forEach(el => {
-            el.className = el.className.replace('text-slate-900', 'text-slate-100');
-        });
-        document.querySelectorAll('.bg-slate-200').forEach(el => {
-            if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
-                el.className = el.className.replace('bg-slate-200', 'bg-blue-200');
-            }
-        });
-    } else {
-        document.body.className = 'bg-slate-200 text-blue-200 min-h-screen transition-colors duration-300';
-        // Revert all cards
-        document.querySelectorAll('.bg-slate-800').forEach(el => {
-            el.className = el.className.replace('bg-slate-800', 'bg-slate-50');
-        });
-        document.querySelectorAll('.border-slate-600').forEach(el => {
-            el.className = el.className.replace('border-slate-600', 'border-blue-200');
-        });
-        document.querySelectorAll('.text-slate-100').forEach(el => {
-            el.className = el.className.replace('text-slate-100', 'text-slate-900');
-        });
-        document.querySelectorAll('.bg-blue-200').forEach(el => {
-            if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
-                el.className = el.className.replace('bg-blue-200', 'bg-slate-200');
-            }
-        });
-    }
+  isDarkMode = !isDarkMode;
+  if (isDarkMode) {
+    document.body.className = 'bg-slate-900 text-slate-300 min-h-screen transition-colors duration-300';
+    // Update all cards
+    document.querySelectorAll('.bg-slate-50').forEach(el => {
+      el.className = el.className.replace('bg-slate-50', 'bg-slate-800');
+    });
+    document.querySelectorAll('.border-blue-200').forEach(el => {
+      el.className = el.className.replace('border-blue-200', 'border-slate-600');
+    });
+    document.querySelectorAll('.text-slate-900').forEach(el => {
+      el.className = el.className.replace('text-slate-900', 'text-slate-100');
+    });
+    document.querySelectorAll('.bg-slate-200').forEach(el => {
+      if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
+        el.className = el.className.replace('bg-slate-200', 'bg-blue-200');
+      }
+    });
+  } else {
+    document.body.className = 'bg-slate-200 text-blue-200 min-h-screen transition-colors duration-300';
+    // Revert all cards
+    document.querySelectorAll('.bg-slate-800').forEach(el => {
+      el.className = el.className.replace('bg-slate-800', 'bg-slate-50');
+    });
+    document.querySelectorAll('.border-slate-600').forEach(el => {
+      el.className = el.className.replace('border-slate-600', 'border-blue-200');
+    });
+    document.querySelectorAll('.text-slate-100').forEach(el => {
+      el.className = el.className.replace('text-slate-100', 'text-slate-900');
+    });
+    document.querySelectorAll('.bg-blue-200').forEach(el => {
+      if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
+        el.className = el.className.replace('bg-blue-200', 'bg-slate-200');
+      }
+    });
+  }
 }
 
 // Event listeners
@@ -666,9 +661,6 @@ document.getElementById('darkModeToggleProfile').addEventListener('click', toggl
 
 // Initialize page on load
 document.addEventListener('DOMContentLoaded', async function () {
-  // Setup dark mode toggles
-  setupDarkModeToggle('darkModeToggle');
-  setupDarkModeToggle('darkModeToggleProfile');
 
   // Check for existing token
   const token = localStorage.getItem('jwt_token');
