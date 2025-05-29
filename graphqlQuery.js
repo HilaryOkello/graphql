@@ -20,10 +20,8 @@ export const GET_COMPLETE_USER_DATA = `
       id
       amount
       createdAt
-      path
       object {
         name
-        type
       }
     }
     passedProjects: progresses_aggregate(
@@ -33,7 +31,6 @@ export const GET_COMPLETE_USER_DATA = `
         count
       }
     }
-    
     failedProjects: progresses_aggregate(
       where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, grade: {_lt: 0}}
     ) {
@@ -41,7 +38,6 @@ export const GET_COMPLETE_USER_DATA = `
         count
       }
     }
-    
     averageGrade: progresses_aggregate(
       where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}}
     ) {
@@ -51,7 +47,17 @@ export const GET_COMPLETE_USER_DATA = `
         }
       }
     }
-    
+    currWorkingOn: groups(
+      order_by: {createdAt: asc}
+      where: {group: {status: {_eq: working}, eventId: {_eq: 75}}}
+    ) {
+      group {
+        createdAt
+        object {
+          name
+        }
+      }
+    }
     skills: transactions(
       order_by: {type: asc, amount: desc}
       distinct_on: [type]
@@ -59,7 +65,6 @@ export const GET_COMPLETE_USER_DATA = `
     ) {
       type
       amount
-      __typename
     }
   }
 }
@@ -71,6 +76,12 @@ export function processUserData(data) {
   // Calculate total XP
   const totalXP = user.transactions
     .reduce((sum, t) => sum + t.amount, 0);
+  
+  // currently working on projects and days since created
+  const currentProjects = user.currWorkingOn.map(group => ({
+    name: group.group.object.name,
+    daysSinceCreated: Math.floor((new Date() - new Date(group.group.createdAt)) / (1000 * 60 * 60 * 24))
+  }));
   
   // Process XP by project
   const xpByProject = {};
@@ -88,8 +99,8 @@ export function processUserData(data) {
     .slice(0, 5);
   
   // Calculate pass/fail ratio from results
-  const passedProjects = user.results.filter(r => r.grade > 0).length;
-  const failedProjects = user.results.filter(r => r.grade === 0).length;
+  const passedProjects = user.passedProjects.aggregate.count || 0;
+  const failedProjects = user.failedProjects.aggregate.count || 0;
   const successRate = passedProjects / (passedProjects + failedProjects) * 100 || 0;
   
   // Process XP over time for chart (with proper date handling)
@@ -118,6 +129,8 @@ export function processUserData(data) {
       totalUp: user.totalUp,
       totalDown: user.totalDown
     },
+    averageGrade: user.averageGrade.aggregate.avg.grade || 0,
+    currentProjects: currentProjects,
     xp: {
       total: totalXP,
       byProject: topProjects,
@@ -132,7 +145,7 @@ export function processUserData(data) {
       passed: passedProjects,
       failed: failedProjects,
       successRate: successRate,
-      total: passedProjects + failedProjects
+      total: passedProjects + failedProjects,
     },
     skills: user.skills || []
   };
