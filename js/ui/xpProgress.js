@@ -2,6 +2,8 @@
  * XP Progress Chart rendering for the Lock In application
  */
 
+import { getNiceScale } from '../utils.js';
+
 /**
  * Renders the XP progress chart
  * @param {Object} userData - The processed user data
@@ -52,17 +54,15 @@ export function renderXPProgressChart(userData) {
       displayValues.push(lastKnownValue);
     });
 
-    // Calculate dynamic scale
     const minXP = Math.min(...displayValues);
     const maxXP = Math.max(...displayValues);
-    const xpRange = maxXP - minXP;
 
-    // Add some padding to the range (10% on each side)
-    const padding_percent = 0.1;
-    const scaledMin = Math.max(0, minXP - (xpRange * padding_percent));
-    const scaledMax = maxXP + (xpRange * padding_percent);
+    // Add 10% padding before computing scale
+    const paddedMin = Math.max(0, minXP - (maxXP - minXP) * 0.1);
+    const paddedMax = maxXP + (maxXP - minXP) * 0.1;
+
+    const { niceMin: scaledMin, niceMax: scaledMax, step: yStep } = getNiceScale(paddedMin, paddedMax);
     const finalRange = scaledMax - scaledMin;
-    console.log("Final range: ", finalRange);
 
     // Calculate positions
     const xStep = chartWidth / (monthsToDisplay.length - 1);
@@ -82,7 +82,7 @@ export function renderXPProgressChart(userData) {
     svg.appendChild(background);
 
     // Draw horizontal grid lines and Y-axis labels
-    const numYGridLines = 5;
+    const numYGridLines = Math.round(finalRange / yStep);
     for (let i = 0; i <= numYGridLines; i++) {
       const y = padding.top + (i * chartHeight / numYGridLines);
       const value = scaledMax - (i * finalRange / numYGridLines);
