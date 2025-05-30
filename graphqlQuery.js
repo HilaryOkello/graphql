@@ -32,7 +32,7 @@ export const GET_COMPLETE_USER_DATA = `
       }
     }
     failedProjects: progresses_aggregate(
-      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, grade: {_lt: 0}}
+      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, grade: {_lt: 1}}
     ) {
       aggregate {
         count
@@ -96,7 +96,7 @@ export function processUserData(data) {
   // Sort projects by XP (top 5)
   const topProjects = Object.entries(xpByProject)
     .sort(([,a], [,b]) => b - a)
-    .slice(0, 5);
+    .slice(0, 10);
   
   // Calculate pass/fail ratio from results
   const passedProjects = user.passedProjects.aggregate.count || 0;

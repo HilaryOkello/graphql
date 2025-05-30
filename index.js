@@ -1,7 +1,5 @@
 import { GET_COMPLETE_USER_DATA } from "./graphqlQuery.js";
 import { processUserData } from "./graphqlQuery.js";
-let currentUserId = null;
-let isDarkMode = false;
 const GRAPHQL_ENDPOINT = 'https://learn.zone01kisumu.ke/api/graphql-engine/v1/graphql';
 
 // JWT token validation
@@ -32,7 +30,7 @@ function isValidToken(token) {
 function showProfileError(message) {
   const errorContainer = document.getElementById('profileErrorContainer');
   if (errorContainer) {
-    errorContainer.textContent = message;
+    errorContainer.textContent = `Problem loading profile data: ${message}`;
     errorContainer.classList.remove('hidden');
   }
 }
@@ -91,7 +89,7 @@ function renderUserInfo(userData) {
     document.getElementById('Campus').textContent = userData.userInfo.campus || 'N/A';
   } catch (error) {
     console.error('Error rendering user info:', error);
-    showProfileError(`Problem loading profile data: ${error.message}`);
+    showProfileError(error.message);
   }
 }
 
@@ -135,7 +133,7 @@ function renderXPData(userData) {
 
   } catch (error) {
     console.error('Error rendering XP data:', error);
-    showProfileError(`Failed to load profile data: ${error.message}`);
+    showProfileError(error.message);
 
     // Set progress bar to 0% on error
     const xpProgressElement = document.getElementById('xpProgress');
@@ -161,15 +159,15 @@ function renderAuditRatio(userData) {
     }
 
     if (givenElement) {
-      givenElement.textContent = userData.auditRatio.giventoLocaleString();
+      givenElement.textContent = userData.auditRatio.given.toLocaleString();
     }
 
     if (receivedElement) {
-      receivedElement.textContent = userData.auditRatio.receivedtoLocaleString();
+      receivedElement.textContent = userData.auditRatio.received.toLocaleString();
     }
   } catch (error) {
     console.error('Error rendering audit ratio:', error);
-    showProfileError(`Failed to load profile data: ${error.message}`);
+    showProfileError(error.message);
   }
 }
 
@@ -249,13 +247,6 @@ function renderProjectSuccess(userData) {
   }
 }
 
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-  const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-  return {
-    x: centerX + (radius * Math.cos(angleInRadians)),
-    y: centerY + (radius * Math.sin(angleInRadians))
-  };
-}
 function renderXPProgressChart(userData) {
   const chartContainer = document.getElementById('xpProgressChart');
   if (!chartContainer) return;
@@ -312,6 +303,7 @@ function renderXPProgressChart(userData) {
     const scaledMin = Math.max(0, minXP - (xpRange * padding_percent));
     const scaledMax = maxXP + (xpRange * padding_percent);
     const finalRange = scaledMax - scaledMin;
+    console.log("Final range: ", finalRange);
 
     // Calculate positions
     const xStep = chartWidth / (monthsToDisplay.length - 1);
@@ -407,6 +399,12 @@ function renderXPProgressChart(userData) {
       circle.setAttribute('fill', '#2563eb');
       circle.setAttribute('stroke', '#ffffff');
       circle.setAttribute('stroke-width', '2');
+
+      // Create tooltip
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `${monthsToDisplay[index]}: ${displayValues[index].toLocaleString()} XP`;
+      circle.appendChild(title);
+
       circles.push(circle);
     });
 
@@ -455,7 +453,7 @@ function renderXPByProject(userData) {
       projectDiv.className = 'flex items-center gap-4';
       projectDiv.innerHTML = `
         <div class="w-24 font-mono text-sm text-slate-500">${project}</div>
-        <div class="flex-1 bg-slate-200 h-6 border-2 border-blue-200">
+        <div class="flex-1 bg-slate-200 h-5 border-2 border-blue-200">
           <div class="bg-${color} h-full" style="width: ${percentage}%"></div>
         </div>
         <div class="w-16 font-mono text-sm font-bold text-${color}">${xp.toLocaleString()}</div>
@@ -545,7 +543,7 @@ async function loadProfileData(token) {
     renderSkillsOverview(userData);
   } catch (error) {
     console.error('Failed to load profile data:', error);
-    showProfileError(`Failed to load profile data: ${error.message}`);
+    showProfileError(error.message);
     renderXPProgressChart(null);
     renderProjectSuccess(null);
   }
@@ -601,7 +599,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async function 
 
   } catch (error) {
     console.error('Login error:', error);
-    errorMessage.textContent = error.message || 'An unexpected error occurred.';
+    errorMessage.textContent = `An unexpected error occurred: ${error.message}` || 'An unexpected error occurred.';
     errorMessage.classList.remove('hidden');
   }
 });
@@ -616,65 +614,18 @@ document.getElementById('logoutBtn')?.addEventListener('click', function () {
   document.getElementById('profilePage').classList.add('hidden');
 });
 
-function toggleDarkMode() {
-  isDarkMode = !isDarkMode;
-  if (isDarkMode) {
-    document.body.className = 'bg-slate-900 text-slate-300 min-h-screen transition-colors duration-300';
-    // Update all cards
-    document.querySelectorAll('.bg-slate-50').forEach(el => {
-      el.className = el.className.replace('bg-slate-50', 'bg-slate-800');
-    });
-    document.querySelectorAll('.border-blue-200').forEach(el => {
-      el.className = el.className.replace('border-blue-200', 'border-slate-600');
-    });
-    document.querySelectorAll('.text-slate-900').forEach(el => {
-      el.className = el.className.replace('text-slate-900', 'text-slate-100');
-    });
-    document.querySelectorAll('.bg-slate-200').forEach(el => {
-      if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
-        el.className = el.className.replace('bg-slate-200', 'bg-blue-200');
-      }
-    });
-  } else {
-    document.body.className = 'bg-slate-200 text-blue-200 min-h-screen transition-colors duration-300';
-    // Revert all cards
-    document.querySelectorAll('.bg-slate-800').forEach(el => {
-      el.className = el.className.replace('bg-slate-800', 'bg-slate-50');
-    });
-    document.querySelectorAll('.border-slate-600').forEach(el => {
-      el.className = el.className.replace('border-slate-600', 'border-blue-200');
-    });
-    document.querySelectorAll('.text-slate-100').forEach(el => {
-      el.className = el.className.replace('text-slate-100', 'text-slate-900');
-    });
-    document.querySelectorAll('.bg-blue-200').forEach(el => {
-      if (!el.querySelector('.bg-green-500, .bg-blue-600, .bg-purple-500, .bg-yellow-500, .bg-red-500, .bg-cyan-500, .bg-pink-500')) {
-        el.className = el.className.replace('bg-blue-200', 'bg-slate-200');
-      }
-    });
-  }
-}
-
-// Event listeners
-document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-document.getElementById('darkModeToggleProfile').addEventListener('click', toggleDarkMode);
-
 // Initialize page on load
 document.addEventListener('DOMContentLoaded', async function () {
-
   // Check for existing token
   const token = localStorage.getItem('jwt_token');
 
   // Check token validity and show appropriate page
   if (isValidToken(token)) {
     // Valid token - show profile page
-    document.getElementById('loginPage').classList.add('hidden');
     document.getElementById('profilePage').classList.remove('hidden');
 
-    // Load profile data
     await loadProfileData(token);
   } else {
-    // Invalid or no token - show login page
     document.getElementById('loginPage').classList.remove('hidden');
     document.getElementById('profilePage').classList.add('hidden');
 
