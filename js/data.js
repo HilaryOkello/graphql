@@ -1,77 +1,14 @@
-export const GET_COMPLETE_USER_DATA = `
-  query GetCompleteUserData {
-  user {
-    id
-    login
-    email: attrs(path: "email")
-    firstName: attrs(path: "firstName")
-    lastName: attrs(path: "lastName")
-    auditRatio
-    totalUp
-    totalDown
-    campus
-    events(where: {eventId: {_eq: 75}}) {
-      level
-    }
-    transactions(
-      where: {type: {_eq: "xp"}, eventId: {_eq: 75}}
-      order_by: {createdAt: asc}
-    ) {
-      id
-      amount
-      createdAt
-      object {
-        name
-      }
-    }
-    passedProjects: progresses_aggregate(
-      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, isDone: {_eq: true}, grade: {_gte: 1}}
-    ) {
-      aggregate {
-        count
-      }
-    }
-    failedProjects: progresses_aggregate(
-      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}, grade: {_lt: 1}}
-    ) {
-      aggregate {
-        count
-      }
-    }
-    averageGrade: progresses_aggregate(
-      where: {eventId: {_eq: 75}, object: {type: {_eq: "project"}}}
-    ) {
-      aggregate {
-        avg {
-          grade
-        }
-      }
-    }
-    currWorkingOn: groups(
-      order_by: {createdAt: asc}
-      where: {group: {status: {_eq: working}, eventId: {_eq: 75}}}
-    ) {
-      group {
-        createdAt
-        object {
-          name
-        }
-      }
-    }
-    skills: transactions(
-      order_by: {type: asc, amount: desc}
-      distinct_on: [type]
-      where: {eventId: {_eq: 75}, _and: {type: {_like: "skill_%"}}}
-    ) {
-      type
-      amount
-    }
-  }
-}
-`;
+/**
+ * Data processing and transformation for the Lock In application
+ */
+
+/**
+ * Processes raw user data from the GraphQL API
+ * @param {Object} data - The raw data from the GraphQL API
+ * @returns {Object} - The processed user data
+ */
 export function processUserData(data) {
   const user = data.user[0];
-  console.log('Processing user data:', user);
   
   // Calculate total XP
   const totalXP = user.transactions
@@ -86,14 +23,14 @@ export function processUserData(data) {
   // Process XP by project
   const xpByProject = {};
   user.transactions.forEach(transaction => {
-    const projectName = transaction.object?.name || extractProjectName(transaction.path);
+    const projectName = transaction.object?.name
     if (!xpByProject[projectName]) {
       xpByProject[projectName] = 0;
     }
     xpByProject[projectName] += transaction.amount;
   });
   
-  // Sort projects by XP (top 5)
+  // Sort projects by XP (top 10)
   const topProjects = Object.entries(xpByProject)
     .sort(([,a], [,b]) => b - a)
     .slice(0, 10);
