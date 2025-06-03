@@ -26,7 +26,7 @@ export function renderSkillsOverview(userData) {
     // Process and display skills
     sortedSkills.forEach((skill, index) => {
       const skillName = skill.type.replace('skill_', '').replace(/_/g, ' ');
-      const percentage = Math.round((skill.amount / maxAmount) * 100);
+      const percentage = skill.amount;
       const color = colors[index % colors.length];
 
       const skillDiv = document.createElement('div');
