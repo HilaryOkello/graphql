@@ -2,6 +2,7 @@
  * Audit ratio rendering for the Lock In application
  */
 
+import { formatBytes } from '../utils.js';
 import { showProfileError } from './index.js';
 
 /**
@@ -23,11 +24,11 @@ export function renderAuditRatio(userData) {
     }
 
     if (givenElement) {
-      givenElement.textContent = userData.auditRatio.given.toLocaleString();
+      givenElement.textContent = formatBytes(userData.auditRatio.given);
     }
 
     if (receivedElement) {
-      receivedElement.textContent = userData.auditRatio.received.toLocaleString();
+      receivedElement.textContent = formatBytes(userData.auditRatio.received);
     }
   } catch (error) {
     console.error('Error rendering audit ratio:', error);

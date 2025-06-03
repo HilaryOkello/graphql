@@ -2,6 +2,8 @@
  * XP Progress Chart rendering for the Lock In application
  */
 
+import { formatBytes, getNiceScale } from '../utils.js';
+
 /**
  * Renders the XP progress chart
  * @param {Object} userData - The processed user data
@@ -13,16 +15,17 @@ export function renderXPProgressChart(userData) {
   chartContainer.innerHTML = '';
 
   // Set up chart dimensions
-  const width = 400;
-  const height = 200;
-  const padding = { left: 50, right: 20, top: 20, bottom: 40 };
+  const width = 800;
+  const height = 400;
+  const padding = { left: 70, right: 20, top: 20, bottom: 40 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
 
   // Create SVG with proper namespace
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', width);
-  svg.setAttribute('height', height);
+  svg.classList.add('w-full', 'h-full');
+  // svg.setAttribute('width', width);
+  // svg.setAttribute('height', height);
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   chartContainer.appendChild(svg);
 
@@ -52,17 +55,15 @@ export function renderXPProgressChart(userData) {
       displayValues.push(lastKnownValue);
     });
 
-    // Calculate dynamic scale
     const minXP = Math.min(...displayValues);
     const maxXP = Math.max(...displayValues);
-    const xpRange = maxXP - minXP;
 
-    // Add some padding to the range (10% on each side)
-    const padding_percent = 0.1;
-    const scaledMin = Math.max(0, minXP - (xpRange * padding_percent));
-    const scaledMax = maxXP + (xpRange * padding_percent);
+    // Add 10% padding before computing scale
+    const paddedMin = Math.max(0, minXP - (maxXP - minXP) * 0.1);
+    const paddedMax = maxXP + (maxXP - minXP) * 0.1;
+
+    const { niceMin: scaledMin, niceMax: scaledMax, step: yStep } = getNiceScale(paddedMin, paddedMax);
     const finalRange = scaledMax - scaledMin;
-    console.log("Final range: ", finalRange);
 
     // Calculate positions
     const xStep = chartWidth / (monthsToDisplay.length - 1);
@@ -82,10 +83,11 @@ export function renderXPProgressChart(userData) {
     svg.appendChild(background);
 
     // Draw horizontal grid lines and Y-axis labels
-    const numYGridLines = 5;
+    const numYGridLines = Math.round(finalRange / yStep);
     for (let i = 0; i <= numYGridLines; i++) {
       const y = padding.top + (i * chartHeight / numYGridLines);
       const value = scaledMax - (i * finalRange / numYGridLines);
+      console.log('Drawing Y grid line for value:', value);
 
       // Grid line
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -99,18 +101,14 @@ export function renderXPProgressChart(userData) {
 
       // Y-axis label
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      text.setAttribute('x', padding.left - 10);
+      text.setAttribute('x', padding.left - 5);
       text.setAttribute('y', y + 4);
       text.setAttribute('text-anchor', 'end');
       text.setAttribute('class', 'text-xs font-mono fill-slate-600');
 
       // Format the value nicely
-      let formattedValue;
-      if (value >= 1000) {
-        formattedValue = (value / 1000).toFixed(value >= 10000 ? 0 : 1) + 'k';
-      } else {
-        formattedValue = Math.round(value).toString();
-      }
+      let formattedValue = formatBytes(value);
+      console.log('Formatted Y-axis value:', formattedValue);
       text.textContent = formattedValue;
       svg.appendChild(text);
     }
@@ -154,14 +152,14 @@ export function renderXPProgressChart(userData) {
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('cx', x);
       circle.setAttribute('cy', y);
-      circle.setAttribute('r', '4');
+      circle.setAttribute('r', '6');
       circle.setAttribute('fill', '#2563eb');
       circle.setAttribute('stroke', '#ffffff');
       circle.setAttribute('stroke-width', '2');
 
       // Create tooltip
       const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-      title.textContent = `${monthsToDisplay[index]}: ${displayValues[index].toLocaleString()} XP`;
+      title.textContent = `${monthsToDisplay[index]}: ${formatBytes(displayValues[index])}`;
       circle.appendChild(title);
 
       circles.push(circle);
@@ -171,7 +169,7 @@ export function renderXPProgressChart(userData) {
     const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
     polyline.setAttribute('fill', 'none');
     polyline.setAttribute('stroke', '#2563eb');
-    polyline.setAttribute('stroke-width', '3');
+    polyline.setAttribute('stroke-width', '4');
     polyline.setAttribute('points', points.trim());
     svg.appendChild(polyline);
 
