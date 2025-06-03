@@ -58,3 +58,20 @@ export function getNiceScale(min, max, numSteps = 5) {
   const niceMax = Math.ceil(max / step) * step;
   return { niceMin, niceMax, step };
 }
+
+/**
+ * Formats a byte size into a human-readable string
+ * @param {number} bytes - The size in bytes
+ * @returns {string} - Formatted size with appropriate unit
+ */
+export function formatBytes(bytes) {
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let i = 0;
+
+  while (bytes >= 1000 && i < units.length - 1) {
+    bytes /= 1000;
+    i++;
+  }
+
+  return `${bytes.toFixed(2)} ${units[i]}`;
+}
