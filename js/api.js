@@ -70,13 +70,15 @@ export const GET_COMPLETE_USER_DATA = `
         }
       }
     }
-    skills: transactions(
-      order_by: {type: asc, amount: desc}
+    skills: transactions_aggregate(
       distinct_on: [type]
-      where: {eventId: {_eq: 75}, _and: {type: {_like: "skill_%"}}}
+      where: {type: { _like: "skill_%" }}
+      order_by: [{type: asc}, {amount: desc}]
     ) {
-      type
-      amount
+      nodes {
+        type
+        amount
+      }
     }
   }
 }

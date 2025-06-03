@@ -84,6 +84,6 @@ export function processUserData(data) {
       successRate: successRate,
       total: passedProjects + failedProjects,
     },
-    skills: user.skills || []
+    skills: user.skills.nodes || []
   };
 }
