@@ -17,31 +17,27 @@ Lock In is a web application that provides users with a comprehensive dashboard 
 - Responsive design with Tailwind CSS
 
 ## Project Structure
-
-The project has been organized into a modular structure following JavaScript best practices:
-
 ```
 /
 ├── index.html          # Main HTML file
 ├── style.css           # Basic styling
 ├── js/                 # JavaScript modules
-│   ├── main.js         # Application initialization and event listeners
+│   ├── main.js         # Application initialization and event 
 │   ├── auth.js         # Authentication-related functionality
 │   ├── api.js          # API communication and GraphQL queries
 │   ├── data.js         # Data processing and transformation
 │   ├── utils.js        # Utility functions
-│   ├── ui/             # UI rendering modules
-│   │   ├── index.js    # UI module exports
-│   │   ├── userInfo.js # User information rendering
-│   │   ├── xpData.js   # XP data rendering
-│   │   ├── auditRatio.js # Audit ratio rendering
-│   │   ├── projects.js # Project success rendering
-│   │   └── skills.js   # Skills overview rendering
-│   └── charts/         # Chart rendering modules
-│       ├── index.js    # Charts module exports
-│       ├── xpProgress.js # XP progress chart
-│       └── projectSuccess.js # Project success chart
+│   └── ui/             # UI rendering modules
+│       ├── index.js    # UI module exports
+│       ├── userInfo.js # User information rendering
+│       ├── xpData.js   # XP data rendering
+│       ├── auditRatio.js # Audit ratio rendering
+│       ├── projects.js # Project success rendering
+│       ├── skills.js   # Skills overview rendering
+│       └── xpProgress.js # XP progress chart
+│
 └── README.md           # This file
+
 ```
 
 ## Module Responsibilities
@@ -80,35 +76,22 @@ The project has been organized into a modular structure following JavaScript bes
 - Handle UI-specific error states
 - Update DOM elements with user data
 
-### Chart Modules
-- Render data visualizations
-- Handle chart-specific calculations and rendering
-
 ## How to Run the Application
-
-1. Clone or download the repository to your local machine
-2. Ensure all files maintain their relative paths as shown in the project structure
-3. Open the project in a web server (you can use a local development server or any static file server)
-4. Access the application through a web browser by navigating to the index.html file
-
-### Using a Local Development Server
-
-If you have Node.js installed, you can use a simple HTTP server:
+Clone the application repository to your local machine:
 
 ```bash
-# Install a simple HTTP server globally
-npm install -g http-server
-
-# Navigate to the project directory
-cd path/to/project
-
-# Start the server
-http-server
-
-# Access the application at http://localhost:8080
+git clone https://learn.zone01kisumu.ke/git/hilaokello/graphql.git
 ```
 
-Alternatively, you can use Python's built-in HTTP server:
+Then navigate to the project directory:
+
+```bash
+cd graphql
+```
+You have three options to run the application:
+
+### Open Using a Local Development Server
+You can use Python's built-in HTTP server:
 
 ```bash
 # Python 3
@@ -116,6 +99,14 @@ python3 -m http.server
 
 # Access the application at http://localhost:8000
 ```
+
+### Open Using Live Server Extension in VSCode
+1. Open the project in Visual Studio Code.
+2. Install the "Live Server" extension if you haven't already.
+3. Right-click on `index.html` and select "Open with Live Server".
+
+### Access the Hosted Application
+The app is also hosted and can be accessed at [Lock In Dashboard]( https://hilaryokello.github.io/graphql/).
 
 ## Authentication
 
