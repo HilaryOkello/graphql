@@ -3,6 +3,7 @@
  */
 
 import { showProfileError } from './index.js';
+import { formatBytes } from '../utils.js';
 
 /**
  * Renders the XP section
@@ -20,7 +21,7 @@ export function renderXPData(userData) {
     const currProjectElement = document.getElementById('currentProjects');
 
     if (xpElement) {
-      xpElement.textContent = `${userData.xp.total.toLocaleString()} XP`;
+      xpElement.textContent = formatBytes(userData.xp.total);
     }
 
     if (levelElement) {
